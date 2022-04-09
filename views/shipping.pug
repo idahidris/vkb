@@ -1,0 +1,109 @@
+include header
+// Page Wrapper
+#wrapper
+    include sidebar
+    // Content Wrapper
+    #content-wrapper.d-flex.flex-column
+        // Main Content
+        #content
+            include topbar
+            // Begin Page Content
+            .container-fluid
+                // Page Heading
+                h1.h3.mb-2.text-gray-800
+                p.mb-4.text-right
+                    |
+                    a.btn.btn-primary.btn-sm(href='/register-shipping-item') create new Shipping Item
+                // DataTables Example
+                .card.shadow.mb-4
+                    .card-header.py-3
+                        h6.m-0.font-weight-bold.text-primary Shopping & Shipping
+                    .card-body
+                        .table-responsive
+                            table#dataTable.table.table-bordered(width='100%' cellspacing='0')
+                                thead
+                                    tr
+                                        th Item ID
+                                        th Item URL
+                                        th Item Name
+                                        th Item Quantity
+                                        th Item Unit Price
+                                        th Item Total Amount
+                                        th Description
+                                        th Shipping Vendor
+                                        th Shipping Payment
+                                        th Shipping Payment Date
+                                        th Expected Shipment Date
+                                        th Actual Shipment Date
+                                        th Shipping Status
+                                        th Payment Status
+                                        th Payment Date
+                                        th Action
+                                tfoot
+                                    tr
+                                        th Item ID
+                                        th Item URL
+                                        th Item Name
+                                        th Item Quantity
+                                        th Item Unit Price
+                                        th Item Total Amount
+                                        th Description
+                                        th Shipping Vendor
+                                        th Shipping Payment
+                                        th Shipping Payment Date
+                                        th Expected Shipment Date
+                                        th Actual Shipment Date
+                                        th Shipping Status
+                                        th Payment Status
+                                        th Payment Date
+                                        th Action
+                                tbody
+                                    tr
+                                        td Ele-ojo
+                                        td Idah
+                                        td eleojo@gmail.com
+                                        td 08030816764
+                                        td 2011/04/25
+                                        td customer from Instagram(rexspect)
+                                        td.d-flex.justify-content-center
+                                            a(href="/subscription?#1234678") add
+                                            a(href="/subscription/#12345") view
+                                        td
+                                        td
+                                        td
+                                        td
+                                        td
+                                        td
+                                        td
+                                        td
+                                        td
+                                    tr
+                                        td Ele-ojo
+                                        td Idah
+                                        td eleojo@gmail.com
+                                        td 08030816764
+                                        td 2011/04/25
+                                        td customer from Instagram(rexspect)
+                                        td.d-flex.justify-content-center
+                                            a(href="/subscription?#1234678") add
+                                            a(href="/subscription/#12345") view
+                                        td
+                                        td
+                                        td
+                                        td
+                                        td
+                                        td
+                                        td
+                                        td
+                                        td
+            // /.container-fluid
+        // End of Main Content
+        // Footer
+        include footer
+        // End of Footer
+    // End of Content Wrapper
+// End of Page Wrapper
+// Scroll to Top Button
+include confirm-logout
+include buttom
+

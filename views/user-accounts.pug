@@ -1,0 +1,71 @@
+include header
+// Page Wrapper
+#wrapper
+  include sidebar
+  // Content Wrapper
+  #content-wrapper.d-flex.flex-column
+    // Main Content
+    #content
+      include topbar
+      // Begin Page Content
+      .container-fluid
+        // Page Heading
+        h1.h3.mb-2.text-gray-800
+        p.mb-4.text-right
+          |
+          a.btn.btn-primary.btn-sm(href='/register-account') create new user account
+        // DataTables Example
+        .card.shadow.mb-4
+          .card-header.py-3
+            h6.m-0.font-weight-bold.text-primary User Accounts
+          .card-body
+            .table-responsive
+              table#dataTable.table.table-bordered(width='100%' cellspacing='0')
+                thead
+                  tr
+                    th First Name
+                    th Last Name
+                    th E-mail
+                    th Phone Number
+                    th Registered Date
+                    th Description
+                    th subscription
+                tfoot
+                  tr
+                    th First Name
+                    th Last Name
+                    th E-mail
+                    th Phone Number
+                    th Registered Date
+                    th Description
+                    th subscription
+                tbody
+                  tr
+                    td Ele-ojo
+                    td Idah
+                    td eleojo@gmail.com
+                    td 08030816764
+                    td 2011/04/25
+                    td customer from Instagram(rexspect)
+                    td.d-flex.justify-content-center
+                      a(href="/subscription?#1234678") add
+                      a(href="/subscription/#12345") view
+                  tr
+                    td Kiara
+                    td Idah
+                    td kiara@gmail.com
+                    td 08030816764
+                    td 2011/04/25
+                    td customer from facebook(iirexspect)
+                    td #1234678
+      // /.container-fluid
+    // End of Main Content
+    // Footer
+    include footer
+    // End of Footer
+  // End of Content Wrapper
+// End of Page Wrapper
+// Scroll to Top Button
+include confirm-logout
+include buttom
+

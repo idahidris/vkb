@@ -1,0 +1,62 @@
+.container
+    .card.o-hidden.border-0.shadow-lg.my-5
+        .card-body.p-0
+            // Nested Row within Card Body
+            .row
+                .col-lg-5.d-none.d-lg-block.bg-register-image
+                .col-lg-7
+                    .p-5
+                        .text-center
+                            h1.h4.text-gray-900.mb-4 Subscribe to a Service
+                        form.user
+                            .form-group
+                                    select.form-control#subcriptionId
+                                        option ---- Select Subscription ID ----
+                                        option #12345678 - Idah Idris A
+                                        option #23456780 - Eleojo Bethany Idah
+                                        option #66736383 - Edidiong Kiara Idah
+                                        option #83773636 - Acheonechojo Vanessa Idah
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    select.form-control#serviceType
+                                        option ---- Select Service Type ----
+                                        option S.O.P
+                                        option Curriculum Vitae(CV)
+                                        option Scholarship Essay
+                                        option School Admission
+                                        option Proof of Funds
+                                .col-sm-6
+                                    input#serviceTitle.form-control.form-control-user(type='text' placeholder='Service Title')
+                            .form-group
+                                input#description.form-control.form-control-user(type='text' placeholder='Description')
+                            .form-group
+                                .custom-file
+                                    input#documentLink.custom-file(type='file')
+                                    label.custom-file-label(for='documentLink') Select output Document
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    input#price.form-control.form-control-user(type='text' placeholder='Price')
+                                .col-sm-6
+                                    input#paidAmount.form-control.form-control-user(type='text' placeholder='Paid Amount')
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    input#lastPaymentRef.form-control.form-control-user(type='text' placeholder='Last Payment Ref')
+                                .col-sm-6
+                                    input#paidAmountDate.form-control.form-control-user(type='text' placeholder='Paid Amount Date')
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    input#expectedDeliveryDate.form-control.form-control-user(type='text' placeholder='Expected Delivery Date')
+                                .col-sm-6
+                                    input#actualDeliveryDate.form-control.form-control-user(type='text' placeholder='Actual Delivery Date')
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    input#subscriptionDate.form-control.form-control-user(type='text' placeholder='Subscription Date')
+                                .col-sm-6
+                                    select.form-control#status
+                                        option ---- Select Status ----
+                                        option Completed
+                                        option Incomplete
+                                        option Initiated
+                            a.btn.btn-primary.btn-user.btn-block(href='login.html')
+                                | Subscribe
+                            hr
