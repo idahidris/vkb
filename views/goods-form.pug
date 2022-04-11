@@ -8,28 +8,36 @@
                     .p-5
                         .text-center
                             h1.h4.text-gray-900.mb-4 Create Goods
-                        form.user
+                            -if(typeof(error) !=='undefined' && error.length >0)
+                                .alert.alert-danger.alert-dismissible(role='alert')
+                                    each item in error
+                                        .li #{item}
+                            -else if(typeof(success) !=='undefined' && success.length> 0)
+                                .alert.alert-success.alert-dismissible(role='alert')
+                                    each item in success
+                                        .li #{item}
+                    -var input = (typeof(data)==='undefined')?{}:data
+                        form.user(action = '/submit-register-goods' method='post')
                             .form-group
-                                    select.form-control#store
-                                        option ---- Select Strore ----
-                                        option Marshy Hill Estate
+                                    select.form-control#store(name='store')
+                                        option(vale='Marshy Hill Estate') Marshy Hill Estate
                             .form-group.row
                                 .col-sm-6.mb-3.mb-sm-0
-                                    input#name.form-control.form-control-user(type='text' placeholder='Name')
+                                    input#name.form-control.form-control-user(name='name' type='text' placeholder='Name' value=input.name)
                                 .col-sm-6
-                                    input#quantity.form-control.form-control-user(type='text' placeholder='Quantity')
+                                    input#quantity.form-control.form-control-user(name='quantity' type='text' placeholder='Quantity' value=input.quantity)
                             .form-group.row
                                 .col-sm-6.mb-3.mb-sm-0
-                                    input#unitPrice.form-control.form-control-user(type='text' placeholder='Unit Price')
+                                    input#unitPrice.form-control.form-control-user(name='unitprice' type='text' placeholder='Unit Price' value=input.unitPrice)
                                 .col-sm-6
-                                    input#quantitySold.form-control.form-control-user(type='text' placeholder='Quantity Sold')
+                                    input#quantitySold.form-control.form-control-user(name='quantitysold' type='text' placeholder='Quantity Sold' value=input.quantitySold)
                             .form-group
-                                    input#description.form-control.form-control-user(type='text' placeholder='Description')
+                                    input#description.form-control.form-control-user(name='description' type='text' placeholder='Description' value=input.description)
                             .form-group.row
                                 .col-sm-6.mb-3.mb-sm-0
-                                    input#manufacturedDate.form-control.form-control-user(type='text' placeholder='Manufactured Date')
+                                    input#manufacturedDate.form-control.form-control-user(name='manufactureddate' type='text' placeholder='Manufactured Date' value=input.manufacturedDate)
                                 .col-sm-6
-                                    input#expiryDate.form-control.form-control-user(type='text' placeholder='Expiry Date')
-                            a.btn.btn-primary.btn-user.btn-block(href='login.html')
+                                    input#expiryDate.form-control.form-control-user(name='expirydate' type='text' placeholder='Expiry Date' value=input.expiryDate)
+                            a.btn.btn-primary.btn-user.btn-block(onclick="this.closest('form').submit(); return false;")
                                 | Create
                             hr

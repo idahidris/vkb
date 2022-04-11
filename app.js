@@ -3,6 +3,9 @@ const app = express();
 const path = require("path");
 const router = express.Router();
 const bodyParser= require("body-parser");
+
+var https = require('http');
+
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
@@ -67,25 +70,162 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 router.post("/login", (req, res)=>{
-    const username = req.body.username;
-    const password = req.body.password;
-    console.log(username);
-    console.log(password);
-    let loginResult= false;
+        const username = req.body.username;
+        const password = req.body.password;
+        console.log(username);
+        console.log(password);
+        let loginResult= false;
 
-    if(username==="Mrs Idah" && password==="eleojo" ){
-        loginResult = true;
-    }
+        if(username==="Mrs Idah" && password==="eleojo" ){
+            loginResult = true;
+        }
 
-    if(loginResult) {
-        res.render("index");
-    }
-    else {
-        res.render("login", {"error": true});
-    }
+        if(loginResult) {
+            res.render("index");
+        }
+        else {
+            res.render("login", {"error": true});
+        }
 
-}
+    }
 );
+
+router.post("/submit-register-goods", (req, res)=>{
+
+
+        const store = req.body.store;
+        const name = req.body.name;
+        const quantity = req.body.quantity;
+        const unitprice = req.body.unitprice;
+        const quantitysold = req.body.quantitysold;
+        const description = req.body.description;
+        const manufactureddate = req.body.manufactureddate;
+        const expirydate = req.body.expirydate;
+        var result=[];
+        var i =0;
+        i = validate(store,'store',result,i);
+        i = validate(name,'Name*',result,i);
+        i = validate(quantity,'Quantity*',result,i);
+        i = validate(unitprice,'Unit Price*',result,i);
+        i = validate(quantitysold,'Quantity Sold*',result,i);
+        i = validate(description,'Description*',result,i);
+        i = validate(manufactureddate,'Manufactured Date*',result,i);
+        i = validate(expirydate,'Expiry Date*',result,i);
+
+        var obj = {
+            "name": name,
+            "quantity": quantity,
+            "unitPrice": unitprice,
+            "quantitySold": quantitysold,
+            "description": description,
+            "manufacturedDate": manufactureddate,
+            "expiryDate": expirydate
+
+        };
+
+        jsonObject = JSON.stringify(obj);
+
+
+        if(i>0) {
+                console.log(i + "error(s) found");
+                console.error(result);
+                res.render("register-goods", {error: result, data: obj});
+            }
+
+        else {
+
+            var postheaders = {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(jsonObject, 'utf8')
+            };
+
+
+            var optionspost = {
+                host: '127.0.0.1',
+                port: 9031,
+                path: '/vkb/api/v1/goods',
+                method: 'POST',
+                headers: postheaders
+            };
+
+            console.info("Making a post call ...");
+            console.info(optionspost);
+            console.info("REQUEST:: " +jsonObject);
+
+
+
+            // do the POST call
+            var reqPost = https.request(optionspost, function(res2) {
+                console.log("statusCode: ", res2.statusCode);
+                // uncomment it for header details
+                //  console.log("headers: ", res.headers);
+
+                res2.on('data', function(d) {
+                    console.info('POST result:\n');
+                    var response = JSON.parse(d);
+                    console.log(response);
+                    console.info('\n\nPOST completed');
+
+
+                    if(res2.statusCode===200){//successful
+                        var id = response.responseBody.id;
+                        res.render("register-goods", {success: ["Successfully Completed, ref "+id]});
+
+                    }
+                    else if(res2.statusCode===400) {
+                        var listError=[];
+                        var k =0;
+                        for(var item of response.apiErrors.apiErrorList){
+                            listError[k]=item.message;
+                            k=k+1;
+                        }
+                        console.log(listError);
+                        res.render("register-goods", {error: listError, data: obj});
+
+
+                    }
+                    else {
+                        res.render("register-goods", {error: ['Error occurred registering goods, please try again later']});
+                    }
+
+
+                });
+
+
+
+
+            });
+
+
+            reqPost.write(jsonObject);
+            reqPost.end();
+
+            reqPost.on('error', function(e) {
+                res.render("register-goods", {error: ['Error occurred registering goods, please try again later']});
+                console.error(e);
+            });
+
+
+
+
+
+        }
+
+    }
+);
+
+function validate(data, name, result, i){
+    if(typeof data ==="undefined" || data.trim().length===0){
+        result[i] = "Kindly fill " +name ;
+        i=i+1;
+    }
+    return i;
+}
+
+
+
+
+
 
 
 app.use("/", router);
