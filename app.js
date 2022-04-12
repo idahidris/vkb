@@ -38,6 +38,7 @@ router.get("/goods", (req, res) => {
     res.render("goods");
 });
 
+
 router.get("/sales", (req, res) => {
     res.render("sales");
 });
@@ -123,7 +124,7 @@ router.post("/submit-register-goods", (req, res)=>{
 
         };
 
-        jsonObject = JSON.stringify(obj);
+         jsonObject = JSON.stringify(obj);
 
 
         if(i>0) {
@@ -142,7 +143,7 @@ router.post("/submit-register-goods", (req, res)=>{
 
             var optionspost = {
                 host: '127.0.0.1',
-                port: 9031,
+                port: 9032,
                 path: '/vkb/api/v1/goods',
                 method: 'POST',
                 headers: postheaders
@@ -169,6 +170,8 @@ router.post("/submit-register-goods", (req, res)=>{
 
                     if(res2.statusCode===200){//successful
                         var id = response.responseBody.id;
+                        var name=response.responseBody.name;
+                        var desc 
                         res.render("register-goods", {success: ["Successfully Completed, ref "+id]});
 
                     }
@@ -213,6 +216,128 @@ router.post("/submit-register-goods", (req, res)=>{
 
     }
 );
+
+
+
+
+
+
+router.get("/goods-data-source", (req, res, next)=>{
+
+
+    const length = req.query.length;
+    const start = req.query.start;
+    const draw = req.query.draw;
+    const searchValue = req.query.search.value;
+
+    console.log("search values ", searchValue);
+
+    console.log("draw ===>"+draw);
+
+        var obj2 = {
+            "pageNumber": start/length,
+            "pageSize": length,
+            "searchValue": searchValue
+
+        };
+
+         jsonObject2 = JSON.stringify(obj2);
+
+
+            var header = {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(jsonObject2, 'utf8')
+            };
+
+
+            var optionsget = {
+                host: '127.0.0.1',
+                port: 9032,
+                path: '/vkb/api/v1/goods',
+                method: 'GET',
+                headers: header
+            };
+
+            console.info("Making a get call ...");
+            console.info(optionsget);
+            console.info("REQUEST:: " +jsonObject2);
+
+
+
+            // do the POST call
+            var reqGet= https.request(optionsget, function(res2) {
+                console.log("statusCode: ", res2.statusCode);
+                // uncomment it for header details
+                //  console.log("headers: ", res.headers);
+
+                res2.on('data', function(d) {
+                    console.info('GET result:\n');
+                    var response = JSON.parse(d);
+                    console.log(response);
+                    console.info('\n\nGET completed');
+
+
+                    if(res2.statusCode===200){//successful
+                        var records= response.responseBody.body.content;
+                        var totalRecord= response.responseBody.body.totalElements;
+                        let dataInfo = {
+                            "draw": draw,
+                            //"search": true,
+                            "recordsTotal": totalRecord,
+                            "recordsFiltered": totalRecord,
+                            "data": records
+                        };
+                        res.send(dataInfo);
+
+                    }
+                    else if(res2.statusCode===400) {
+                        var listError=[];
+                        var k =0;
+                        for(var item of response.apiErrors.apiErrorList){
+                            listError[k]=item.message;
+                            k=k+1;
+                        }
+                        console.log(listError);
+                        res.send([]);
+
+                        //nin: 29839058364 idah aladi aminat
+
+
+                    }
+                    else {
+                        res.send([]);
+                    }
+
+
+                });
+
+
+
+
+            });
+
+
+            reqGet.write(jsonObject2);
+            reqGet.end();
+
+            reqGet.on('error', function(e) {
+                console.error(e);
+                res.send([]);
+            });
+
+
+
+
+
+
+
+    }
+);
+
+
+
+
+
 
 function validate(data, name, result, i){
     if(typeof data ==="undefined" || data.trim().length===0){
