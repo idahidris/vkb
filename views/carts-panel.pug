@@ -1,0 +1,40 @@
+.container
+        .row.d-flex.justify-content-center.align-items-center
+            .col-12
+                .card(style='border-radius: 15px;')
+                    .card-body
+                        .row.g-0
+                            .col-lg-8
+                                .p-5
+                                    .d-flex.justify-content-between.align-items-center.mb-5
+                                        h6.fw-bold.mb-0.text-black Please add to cart...
+                                        h6.mb-0.text-muted 1 item
+                                    hr.my-4
+                                    .row.mb-4.d-flex.justify-content-between.align-items-center
+                                        .col-md-2.col-lg-2.col-xl-2
+                                            img.img-fluid.rounded-3(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img7.webp' alt='Cotton T-shirt')
+                                        .col-md-3.col-lg-3.col-xl-3
+                                            h6#itemName.text-muted Shirt
+                                            h6#itemDescription.text-black.mb-0 Cotton T-shirt
+                                        .col-md-3.col-lg-3.col-xl-2.d-flex
+                                            input#itemQuantity.form-control.form-control-lg.px-2(min='0' name='quantity' value='1' type='number')
+                                        .col-md-3.col-lg-2.col-xl-2.offset-lg-1
+                                            h6#itemUnitPrice.mb-0 &#8358; 44.00
+                                        .col-md-1.col-lg-1.col-xl-1.text-end
+                                            a.text-muted(href='#!')
+                                                i.fas.fa-times
+                                    hr.my-4
+                                    .pt-5
+                                        h6.mb-0
+                                            a.text-body(href='#' data-dismiss='modal')
+                                                i.fas.fa-long-arrow-alt-left.me-2
+                                                | Back to shop
+                            .col-lg-4.bg-grey
+                                .p-4
+                                    h6.fw-bold.mb-5.mt-2.pt-1 Summary
+                                    hr.my-4
+                                    .d-flex.justify-content-between.mb-5
+                                        h6.text-uppercase Total price:
+                                        h5#itemTotalPrice &#8358; 1,370,000.00
+                                    button#cartSubmitButton.btn.btn-primary.btn-block.btn-lg(type='button' data-info='' data-mdb-ripple-color='dark' onclick="addToCart(); return false;") Add To Cart
+                                    hr.my-4

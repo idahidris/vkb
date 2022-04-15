@@ -14,6 +14,7 @@ head
 
   // Custom styles for this page
   link(href='vendor/datatables/dataTables.bootstrap4.min.css' rel='stylesheet')
+  link(href='css/carts.css' rel='stylesheet' type=text/css)
 // Page Wrapper
 #wrapper
   include sidebar
@@ -34,29 +35,7 @@ head
           .card-header.py-3
             h6.m-0.font-weight-bold.text-primary Goods
           .card-body
-            .table-responsive
-              table#dataTable.table.table-bordered(width='100%' cellspacing='0')
-                thead
-                  tr
-                    th ID
-                    th Name
-                    th Description
-                    th Unit Price
-                    th Quantity
-                    th Manufactured Date
-                    th Expiry Date
-                    th Action
-                tfoot
-                  tr
-                    th ID
-                    th Name
-                    th Description
-                    th Unit Price
-                    th Quantity
-                    th Manufactured Date
-                    th Expiry Date
-                    th Action
-                tbody
+            include carts-panel
       // /.container-fluid
     // End of Main Content
     // Footer
@@ -71,8 +50,17 @@ head
 a.scroll-to-top.rounded(href='#page-top')
   i.fas.fa-angle-up
 // Logout Modal
-include logout-modal
-include cart-modal
+#logoutModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        h5#exampleModalLabel.modal-title Ready to Leave?
+        button.close(type='button' data-dismiss='modal' aria-label='Close')
+          span(aria-hidden='true') &times;
+      .modal-body Select &quot;Logout&quot; below if you are ready to end your current session.
+      .modal-footer
+        button.btn.btn-secondary(type='button' data-dismiss='modal') Cancel
+        a.btn.btn-primary(href='login.html') Logout
 // Bootstrap core JavaScript
 script(src='vendor/jquery/jquery.min.js')
 script(src='vendor/bootstrap/js/bootstrap.bundle.min.js')
@@ -85,5 +73,3 @@ script(src='vendor/datatables/jquery.dataTables.min.js')
 script(src='vendor/datatables/dataTables.bootstrap4.min.js')
 // Page level custom scripts
 script(src='js/demo/datatables-goods.js')
-script(src='js/demo/cart.js')
-

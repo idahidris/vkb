@@ -22,6 +22,10 @@ router.get("/register", (req, res) => {
     res.render("register");
 });
 
+router.get("/checkout", (req, res) => {
+    res.render("carts");
+});
+
 router.get("/shipping", (req, res) => {
     res.render("shipping");
 });
@@ -69,6 +73,178 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(bodyParser.json());
+
+
+
+
+router.post("/add-to-cart", (req, res, next)=>{
+
+        const id = req.body.id;
+        const qty = req.body.qty;
+        var header = {
+            'Content-Type': 'application/json'
+        };
+
+        var optionspost = {
+            host: '127.0.0.1',
+            port: 9032,
+            path: '/vkb/api/v1/cart/'+id+'/'+qty,
+            method: 'POST',
+            headers: header
+        };
+
+        console.info("Making a post call ...");
+        console.info(optionspost);
+
+
+        var reqGet= https.request(optionspost, function(res2) {
+            console.log("statusCode: ", res2.statusCode);
+
+            res2.on('data', function(d) {
+                console.info('POST result:\n');
+                var response = JSON.parse(d);
+                console.log(response);
+                console.info('\n\nPOST completed');
+
+
+                if(res2.statusCode===200){//successful
+                    var records= response.responseBody;
+                    var remain = records.remainder;
+                    var name = records.data.itemId;
+                    var message = name + " was successfully added to cart, remainder goods :"+ remain;
+                    var reply ={
+                        "successful": true,
+                        "message": message
+                    };
+                    res.send(reply);
+
+                }
+                else if(res2.statusCode===400) {
+                    var listError=[];
+                    var k =0;
+                    for(var item of response.apiErrors.apiErrorList){
+                        listError[k]=item.message;
+                        k=k+1;
+                    }
+                    console.log(listError);
+
+                    var reply ={
+                        "successful": false,
+                        "message": listError
+                    };
+                    res.send(reply);
+
+                }
+                else {
+                    var listError=["please try again, later"];
+
+                    var response ={
+                        "successful": false,
+                        "message": listError
+                    };
+                    res.send(response);
+                }
+
+
+            });
+
+
+
+
+        });
+        reqGet.end();
+
+        reqGet.on('error', function(e) {
+            console.error(e);
+            res.send([]);
+        });
+
+
+
+
+
+
+
+    }
+);
+
+router.get("/goods-by-id", (req, res, next)=>{
+
+        const id = req.query.id;
+        var header = {
+            'Content-Type': 'application/json'
+        };
+
+        var optionsget = {
+            host: '127.0.0.1',
+            port: 9032,
+            path: '/vkb/api/v1/goods/'+id,
+            method: 'GET',
+            headers: header
+        };
+
+        console.info("Making a get call ...");
+        console.info(optionsget);
+
+
+        var reqGet= https.request(optionsget, function(res2) {
+            console.log("statusCode: ", res2.statusCode);
+
+            res2.on('data', function(d) {
+                console.info('GET result:\n');
+                var response = JSON.parse(d);
+                console.log(response);
+                console.info('\n\nGET completed');
+
+
+                if(res2.statusCode===200){//successful
+                    var records= response.responseBody.body.content;
+                    res.send(records);
+
+                }
+                else if(res2.statusCode===400) {
+                    var listError=[];
+                    var k =0;
+                    for(var item of response.apiErrors.apiErrorList){
+                        listError[k]=item.message;
+                        k=k+1;
+                    }
+                    console.log(listError);
+                    res.send([]);
+
+                }
+                else {
+                    res.send([]);
+                }
+
+
+            });
+
+
+
+
+        });
+        reqGet.end();
+
+        reqGet.on('error', function(e) {
+            console.error(e);
+            res.send([]);
+        });
+
+
+
+
+
+
+
+    }
+);
+
+
+
+
+
+
 
 router.post("/login", (req, res)=>{
         const username = req.body.username;
@@ -171,7 +347,7 @@ router.post("/submit-register-goods", (req, res)=>{
                     if(res2.statusCode===200){//successful
                         var id = response.responseBody.id;
                         var name=response.responseBody.name;
-                        var desc 
+
                         res.render("register-goods", {success: ["Successfully Completed, ref "+id]});
 
                     }
