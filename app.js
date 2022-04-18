@@ -724,9 +724,9 @@ router.get("/dashboard", (req, res, next)=>{
                     let monthIncome=0;
 
                     for(var income of monthlyIncome){
-                        yearIncome = yearIncome + income.total;
-                        if(income.month === thisMonth) {
-                            monthIncome = income.total;
+                        yearIncome = yearIncome + income.measure;
+                        if(income.factor === thisMonth) {
+                            monthIncome = income.measure;
                         }
                     }
 
@@ -734,7 +734,9 @@ router.get("/dashboard", (req, res, next)=>{
 
                     let rec = "0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000";
 
-                    res.render("index", {"rec": rec,"monthIncome":monthIncome.toLocaleString(), "yearIncome": yearIncome.toLocaleString()});
+                    let salesPerc = Math.round(yearIncome*100/records.goodsValue.measure);
+
+                    res.render("index", {"salesPercent":salesPerc,"rec": rec,"monthIncome":monthIncome.toLocaleString(), "yearIncome": yearIncome.toLocaleString(), "goodsValue": records.goodsValue.measure.toLocaleString()});
 
                 }
                 else if(res2.statusCode===400) {
