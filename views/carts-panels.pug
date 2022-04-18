@@ -1,0 +1,46 @@
+
+.container
+        .row.d-flex.justify-content-center.align-items-center
+            .col-12
+                .card(style='border-radius: 15px;')
+                    .card-body
+                        .row.g-0
+                                .col-lg-8
+                                    .p-4
+                                    -if(typeof data ==='undefined')data={carts:[], total:"0.00"};
+                                          if(data.carts.length >0)
+                                            h6.mb-0.text-muted  item(s)
+                                    each cart in data.carts
+                                        hr.my-4
+                                        .row.mb-4.d-flex.justify-content-between.align-items-center
+                                            .col-md-2.col-lg-2.col-xl-2
+                                                img.img-fluid.rounded-3(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img7.webp' alt='Cotton T-shirt')
+                                            .col-md-3.col-lg-3.col-xl-3
+                                                h6#itemName.text-muted #{cart.goods.name}
+                                                h6#itemDescription.text-black.mb-0 #{cart.goods.description}
+                                            .col-md-3.col-lg-3.col-xl-2.d-flex
+                                                input#itemQuantity.form-control.form-control-lg.px-2(min='0' name='quantity' value=cart.qty type='number' disabled=true)
+                                            .col-md-3.col-lg-2.col-xl-2.offset-lg-1
+                                                h6#itemUnitPrice.mb-0 &#8358; #{cart.goods.unitPrice}
+                                            .col-md-1.col-lg-1.col-xl-1.text-end
+                                                a.text-muted(href='/cancel-cart?id='+cart.goods.id)
+                                                    i.fas.fa-times
+                                        hr.my-4
+
+                                .col-lg-4.bg-greys
+                                  -if(data.carts.length >0)
+                                    .p-4
+                                        h6.fw-bold.mb-5.mt-2.pt-1 Summary
+                                        hr.my-4
+                                        .d-flex.justify-content-between.mb-5
+                                            h6.text-uppercase Total price:
+                                            h5#itemTotalPrice &#8358; #{data.total}
+                                        p.my-4
+                                    form.user(action = '/cart-to-sales' method='post')
+                                        input#customerRef.form-control.form-control-lg(placeholder="Customer Ref", name="customerRef")
+                                        hr.my-4
+                                        a#cartSubmitButton.btn.btn-primary.btn-block.btn-lg(onclick="this.closest('form').submit(); return false;") Submit-Sales
+                                        hr.my-4
+                                .col-lg-12
+                                 -if(data.carts.length <=0)
+                                   h6.fw-bold.text-center No item in the cart

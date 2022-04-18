@@ -20,8 +20,9 @@
               .row.no-gutters.align-items-center
                 .col.mr-2
                   .text-xs.font-weight-bold.text-primary.text-uppercase.mb-1
-                    | Earnings (Monthly)
-                  .h5.mb-0.font-weight-bold.text-gray-800 $40,000
+                    | Income (Monthly)
+                  -if(typeof monthIncome ==='undefined')monthIncome=0.00
+                  .h5.mb-0.font-weight-bold.text-gray-800 &#8358; #{monthIncome}
                 .col-auto
                   i.fas.fa-calendar.fa-2x.text-gray-300
         // Earnings (Monthly) Card Example
@@ -31,8 +32,9 @@
               .row.no-gutters.align-items-center
                 .col.mr-2
                   .text-xs.font-weight-bold.text-success.text-uppercase.mb-1
-                    | Earnings (Annual)
-                  .h5.mb-0.font-weight-bold.text-gray-800 $215,000
+                    | Income (Annual)
+                -if(typeof yearIncome ==='undefined')yearIncome=0.00
+                  .h5.mb-0.font-weight-bold.text-gray-800 &#8358; #{yearIncome}
                 .col-auto
                   i.fas.fa-dollar-sign.fa-2x.text-gray-300
         // Earnings (Monthly) Card Example

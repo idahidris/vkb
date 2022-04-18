@@ -14,6 +14,7 @@ head
 
   // Custom styles for this page
   link(href='vendor/datatables/dataTables.bootstrap4.min.css' rel='stylesheet')
+  link(href='css/carts.css' rel='stylesheet' type=text/css)
 // Page Wrapper
 #wrapper
   include sidebar
@@ -28,52 +29,25 @@ head
         h1.h3.mb-2.text-gray-800
         p.mb-4.text-right
           |
-          a.btn.btn-primary.btn-sm(href='/goods')  shopping
+          a.btn.btn-primary.btn-sm(href='/goods') goods
         // DataTales Example
         .card.shadow.mb-4
           .card-header.py-3
-            h6.m-0.font-weight-bold.text-primary Sales
+            h6.m-0.font-weight-bold.text-primary Checkout Confirmation
           .card-body
-            .table-responsive
-              table#dataTableSales.table.table-bordered(width='100%' cellspacing='0')
-                thead
-                  tr
-                    th Batch ID
-                    th Sales ID
-                    th Item Name
-                    th Quantity
-                    th Unit  Price
-                    th Total Price
-                    th Item Description
-                    th Manufactured Date
-                    th Expiry Date
-                    th Customer Ref
-                    th Sales Date
-                    th Item Id
-                    th Store Name
-                tfoot
-                  tr
-                    th Batch ID
-                    th Sales ID
-                    th Item Name
-                    th Quantity
-                    th Unit  Price
-                    th Total Price
-                    th Item Description
-                    th Manufactured Date
-                    th Expiry Date
-                    th Customer Ref
-                    th Sales Date
-                    th Item Id
-                    th Store Name
-                tbody
+            -if (typeof (successful) !== 'undefined' && successful === false)
+                .alert.alert-danger.alert-dismissible.text-center(role='alert' hidden=false)
+                    .li.text-center #{message}
+            - else if (typeof (successful) !== 'undefined' && successful == true)
+                .alert.alert-success.alert-dismissible.text-center(role='alert')
+                    .li.text-center #{message}
       // /.container-fluid
     // End of Main Content
     // Footer
     footer.sticky-footer.bg-white
       .container.my-auto
         .copyright.text-center.my-auto
-          span Copyright &copy; Your Website 2022
+          span Copyright &copy; Your Website 2022s
     // End of Footer
   // End of Content Wrapper
 // End of Page Wrapper
@@ -93,6 +67,4 @@ script(src='js/sb-admin-2.min.js')
 script(src='vendor/datatables/jquery.dataTables.min.js')
 script(src='vendor/datatables/dataTables.bootstrap4.min.js')
 // Page level custom scripts
-script(src='js/demo/datatables-sales.js')
-script(src='js/demo/cart.js')
-
+script(src='js/demo/datatables-goods.js')

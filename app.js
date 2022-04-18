@@ -22,9 +22,6 @@ router.get("/register", (req, res) => {
     res.render("register");
 });
 
-router.get("/checkout", (req, res) => {
-    res.render("carts");
-});
 
 router.get("/shipping", (req, res) => {
     res.render("shipping");
@@ -55,9 +52,6 @@ router.get("/service-subscription", (req, res) => {
     res.render("service-subscription");
 });
 
-router.get("/dashboard", (req, res) => {
-    res.render("index");
-});
 
 router.get("/register-goods", (req, res) => {
     res.render("register-goods");
@@ -75,7 +69,79 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
+router.get("/cancel-cart", (req, res, next)=>{
 
+        const id = req.query.id;
+        console.log("item id==>"+ id);
+        var header = {
+            'Content-Type': 'application/json'
+        };
+
+        var optionspost = {
+            host: '127.0.0.1',
+            port: 9032,
+            path: '/vkb/api/v1/cart/'+id,
+            method: 'DELETE',
+            headers: header
+        };
+
+        console.info("Making a delete call ...");
+        console.info(optionspost);
+
+
+        var reqGet= https.request(optionspost, function(res2) {
+            console.log("statusCode: ", res2.statusCode);
+
+            res2.on('data', function(d) {
+                console.info('POST result:\n');
+                var response = JSON.parse(d);
+                console.log(response);
+                console.info('\n\nPOST completed');
+
+
+                if(res2.statusCode===200){//successful
+                    var records= response.responseBody;
+
+                    res.render("carts", {"data":records});
+
+                }
+                else if(res2.statusCode===400) {
+                    var listError=[];
+                    var k =0;
+                    for(var item of response.apiErrors.apiErrorList){
+                        listError[k]=item.message;
+                        k=k+1;
+                    }
+                    console.log(listError);
+                    res.render("carts", {"data":{"carts":[], total:"0.00"}});
+
+                }
+                else {
+                    res.render("carts", {"data":{"carts":[], total:"0.00"}});
+                }
+
+
+            });
+
+
+
+
+        });
+        reqGet.end();
+
+        reqGet.on('error', function(e) {
+            console.error(e);
+            res.render("carts", {"data":{"carts":[], total:"0.00"}});;
+        });
+
+
+
+
+
+
+
+    }
+);
 
 router.post("/add-to-cart", (req, res, next)=>{
 
@@ -157,6 +223,110 @@ router.post("/add-to-cart", (req, res, next)=>{
         reqGet.on('error', function(e) {
             console.error(e);
             res.send([]);
+        });
+
+
+
+
+
+
+
+    }
+);
+
+
+
+router.post("/cart-to-sales", (req, res, next)=>{
+
+        const id = 'admin';
+        var ref = req.body.customerRef;
+        if(ref.length<1)
+            ref="default";
+
+        console.log("ref ", ref);
+
+        var header = {
+            'Content-Type': 'application/json'
+        };
+
+        var optionspost = {
+            host: '127.0.0.1',
+            port: 9032,
+            path: '/vkb/api/v1/cart/'+id+'/'+ref,
+            method: 'PUT',
+            headers: header
+        };
+
+        console.info("Making a put call ...");
+        console.info(optionspost);
+
+
+        var reqPut= https.request(optionspost, function(res2) {
+            console.log("statusCode: ", res2.statusCode);
+
+            res2.on('data', function(d) {
+                console.info('PUT result:\n');
+                var response = JSON.parse(d);
+                console.log(response);
+                console.info('\n\nPUT completed');
+
+
+                if(res2.statusCode===200){//successful
+                    var records= response.responseBody;
+                    console.log(records);
+
+                    var message =  "sales was successful, ref:"+records.batchId;
+                    var reply ={
+                        "successful": true,
+                        "message": message
+                    };
+                    res.render("confirmation", reply);
+
+                }
+                else if(res2.statusCode===400) {
+                    var listError=[];
+                    var k =0;
+                    for(var item of response.apiErrors.apiErrorList){
+                        listError[k]=item.message;
+                        k=k+1;
+                    }
+                    console.log(listError);
+
+                    var reply ={
+                        "successful": false,
+                        "message": listError
+                    };
+                    res.render("confirmation", reply);
+
+                }
+                else {
+                    var listError=["please try again, later"];
+
+                    var response ={
+                        "successful": false,
+                        "message": listError
+                    };
+                    res.render("confirmation", response);
+                }
+
+
+            });
+
+
+
+
+        });
+    reqPut.end();
+
+    reqPut.on('error', function(e) {
+            console.error(e);
+            var listError=["please try again, later"];
+
+            var response ={
+                "successful": false,
+                "message": listError
+            };
+        res.render("/confirmation", response);
         });
 
 
@@ -396,6 +566,217 @@ router.post("/submit-register-goods", (req, res)=>{
 
 
 
+router.get("/sales-data-source", (req, res, next)=>{
+
+
+        const length = req.query.length;
+        const start = req.query.start;
+        const draw = req.query.draw;
+        const searchValue = req.query.search.value;
+
+        console.log("search values ", searchValue);
+
+        console.log("draw ===>"+draw);
+
+        var obj2 = {
+            "pageNumber": start/length,
+            "pageSize": length,
+            "searchValue": searchValue
+
+        };
+
+        var jsonObject2 = JSON.stringify(obj2);
+
+
+        var header = {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(jsonObject2, 'utf8')
+        };
+
+
+        var optionsget = {
+            host: '127.0.0.1',
+            port: 9032,
+            path: '/vkb/api/v1/sales',
+            method: 'GET',
+            headers: header
+        };
+
+        console.info("Making a get call ...");
+        console.info(optionsget);
+        console.info("REQUEST:: " +jsonObject2);
+
+
+
+        // do the POST call
+        var reqGet= https.request(optionsget, function(res2) {
+            console.log("statusCode: ", res2.statusCode);
+            // uncomment it for header details
+            //  console.log("headers: ", res.headers);
+
+            res2.on('data', function(d) {
+                console.info('GET result:\n');
+                var response = JSON.parse(d);
+                console.log(response);
+                console.info('\n\nGET completed');
+
+
+                if(res2.statusCode===200){//successful
+                    var records= response.responseBody.body.content;
+                    var totalRecord= response.responseBody.body.totalElements;
+                    let dataInfo = {
+                        "draw": draw,
+                        //"search": true,
+                        "recordsTotal": totalRecord,
+                        "recordsFiltered": totalRecord,
+                        "data": records
+                    };
+                    res.send(dataInfo);
+
+                }
+                else if(res2.statusCode===400) {
+                    var listError=[];
+                    var k =0;
+                    for(var item of response.apiErrors.apiErrorList){
+                        listError[k]=item.message;
+                        k=k+1;
+                    }
+                    console.log(listError);
+                    res.send([]);
+
+
+
+
+                }
+                else {
+                    res.send([]);
+                }
+
+
+            });
+
+
+
+
+        });
+
+
+        reqGet.write(jsonObject2);
+        reqGet.end();
+
+        reqGet.on('error', function(e) {
+            console.error(e);
+            res.send([]);
+        });
+
+
+
+
+
+
+
+    }
+);
+
+
+router.get("/dashboard", (req, res, next)=>{
+
+        var header = {
+            'Content-Type': 'application/json'
+        };
+
+
+        var optionsget = {
+            host: '127.0.0.1',
+            port: 9032,
+            path: '/vkb/api/v1/sales/dashboard',
+            method: 'GET',
+            headers: header
+        };
+
+        console.info("Making a get call ...");
+        console.info(optionsget);
+
+
+        // do the GET call
+        var reqGet= https.request(optionsget, function(res2) {
+            console.log("statusCode: ", res2.statusCode);
+            // uncomment it for header details
+            //  console.log("headers: ", res.headers);
+
+            res2.on('data', function(d) {
+                console.info('GET result:\n');
+                var response = JSON.parse(d);
+                console.log(response);
+                console.info('\n\nGET completed');
+
+
+                if(res2.statusCode===200){//successful
+                    var records= response.responseBody;
+                    var monthlyIncome = records.monthlyIncome;
+
+                    const months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+                    const date = new Date();
+
+                    let thisMonth = months[date.getMonth()];
+
+                    let yearIncome =0;
+                    let monthIncome=0;
+
+                    for(var income of monthlyIncome){
+                        yearIncome = yearIncome + income.total;
+                        if(income.month === thisMonth) {
+                            monthIncome = income.total;
+                        }
+                    }
+
+                    console.log(monthIncome, yearIncome);
+
+                    let rec = "0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000";
+
+                    res.render("index", {"rec": rec,"monthIncome":monthIncome.toLocaleString(), "yearIncome": yearIncome.toLocaleString()});
+
+                }
+                else if(res2.statusCode===400) {
+                    var listError=[];
+                    var k =0;
+                    for(var item of response.apiErrors.apiErrorList){
+                        listError[k]=item.message;
+                        k=k+1;
+                    }
+                    console.log(listError);
+                    res.render("index");
+
+
+                }
+                else {
+                    res.render("index");
+                }
+
+
+            });
+
+
+
+
+        });
+
+        reqGet.end();
+
+        reqGet.on('error', function(e) {
+            console.error(e);
+            res.render("index");
+        });
+
+
+
+
+
+
+
+    }
+);
+
 
 
 router.get("/goods-data-source", (req, res, next)=>{
@@ -510,6 +891,98 @@ router.get("/goods-data-source", (req, res, next)=>{
     }
 );
 
+
+
+
+router.get("/checkout", (req, res, next)=>{
+
+
+        var obj2 = {
+            "userId": "admin"
+        };
+
+        var jsonObject2 = JSON.stringify(obj2);
+
+
+        var header = {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(jsonObject2, 'utf8')
+        };
+
+
+        var optionsget = {
+            host: '127.0.0.1',
+            port: 9032,
+            path: '/vkb/api/v1/cart',
+            method: 'GET',
+            headers: header
+        };
+
+        console.info("Making a get call ...");
+        console.info(optionsget);
+        console.info("REQUEST:: " +jsonObject2);
+
+
+
+        // do the POST call
+        var reqGet= https.request(optionsget, function(res2) {
+            console.log("statusCode: ", res2.statusCode);
+            // uncomment it for header details
+            //  console.log("headers: ", res.headers);
+
+            res2.on('data', function(d) {
+                console.info('GET result:\n');
+                var response = JSON.parse(d);
+                console.log(response);
+                console.info('\n\nGET completed');
+
+
+                if(res2.statusCode===200){//successful
+                    var records= response.responseBody;
+                    res.render("carts",{"data":records});
+
+                }
+                else if(res2.statusCode===400) {
+                    var listError=[];
+                    var k =0;
+                    for(var item of response.apiErrors.apiErrorList){
+                        listError[k]=item.message;
+                        k=k+1;
+                    }
+                    console.log(listError);
+                    res.render("carts",{"data":[]});
+
+
+                }
+                else {
+                    res.render("carts",{"data":[]});
+                }
+
+
+            });
+
+
+
+
+        });
+
+
+        reqGet.write(jsonObject2);
+        reqGet.end();
+
+        reqGet.on('error', function(e) {
+            console.error(e);
+            res.send("carts",{"data":[]});
+        });
+
+
+
+
+
+
+
+    }
+);
 
 
 
