@@ -1,0 +1,59 @@
+.container
+    .card.o-hidden.border-0.shadow-lg.my-5
+        .card-body.p-0
+            a(href='/subscriptions').btn.btn-primary
+                i.fas.fa-fw.fa-check-double
+            // Nested Row within Card Body
+            .row
+                //.col-lg-5.d-none.d-lg-block.bg-register-image
+                .col-lg-12
+                    .p-5
+                        .text-center
+                            h1.h4.text-gray-900.mb-4 Edit a Subscription
+                            .alert#alertMessage.alert-danger.alert-dismissible.text-center(role='alert' hidden=true)
+                                .li.text-center #{message}
+                        form.user
+                            .form-group
+                                    label(for='customerId') Customer-ID
+                                    input#customerId.form-control.form-control-user(type='text' placeholder='Customer Id' name='customerId' disabled=true)
+                            .form-group.row
+                                    label(for='serviceTitle') Service Title
+                                    input#serviceTitle.form-control.form-control-user(type='text' placeholder='Service Title' name='serviceTitle' )
+                            .form-group
+                                label(for='description') Description
+                                input#description.form-control.form-control-user(type='text' placeholder='Description' name='description')
+                            .form-group
+                                    label(for='documentLink') Document Link
+                                    input#documentLink.form-control.form-control-user(type='text' placeholder='Document Link' name='documentLink')
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    label(for='price') Price
+                                    input#price.form-control.form-control-user(type='text' placeholder='Price' name='price')
+                                .col-sm-6
+                                    label(for='paidAmount') Paid Amount
+                                    input#paidAmount.form-control.form-control-user(type='text' placeholder='Paid Amount' name='paidAmount')
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    label(for='lastPaymentRef') Last Payment Reference
+                                    input#lastPaymentRef.form-control.form-control-user(type='text' placeholder='Last Payment Ref' name='lastPaymentRef')
+                                .col-sm-6
+                                    label(for='paidAmountDate') Paid Amount Date
+                                    input#paidAmountDate.form-control.form-control-user(type='text' placeholder='Paid Amount Date' name='paidAmountDate' )
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    label(for='expectedDeliveryDate') Expected Delivery Date
+                                    input#expectedDeliveryDate.form-control.form-control-user(type='text' placeholder='Expected Delivery Date' name='expectedDeliveryDate' )
+                                .col-sm-6
+                                    label(for='actualDeliveryDate') Actual Delivery Date
+                                    input#actualDeliveryDate.form-control.form-control-user(type='text' placeholder='Actual Delivery Date' name='actualDeliveryDate')
+                            .form-group.row
+                                .col-sm-6
+                                    label(for='status') Status
+                                    select.form-control#status(name='status')
+                                        option(value='') ---- Select Status ----
+                                        option#Completed( value='Completed') Completed
+                                        option#Incomplete( value='Incomplete') Incomplete
+                                        option#Initiated( value='Initiated') Initiated
+                            a#submitEditedSubscription.btn.btn-primary.btn-user.btn-block
+                                | UPDATE
+                            hr

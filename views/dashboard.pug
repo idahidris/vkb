@@ -19,8 +19,8 @@
             .card-body
               .row.no-gutters.align-items-center
                 .col.mr-2
-                  .text-xs.font-weight-bold.text-primary.text-uppercase.mb-1
-                    | Sales (Monthly)
+                  .text-xs.font-weight-bold.text-primary.mb-1
+                    | Goods (Monthly)
                   -if(typeof monthIncome ==='undefined')monthIncome=0.00
                   .h5.mb-0.font-weight-bold.text-gray-800 &#8358; #{monthIncome}
                 .col-auto
@@ -31,8 +31,8 @@
             .card-body
               .row.no-gutters.align-items-center
                 .col.mr-2
-                  .text-xs.font-weight-bold.text-success.text-uppercase.mb-1
-                    | Sales (Annual)
+                  .text-xs.font-weight-bold.text-success.mb-1
+                    | Goods (Annual)
                 -if(typeof yearIncome ==='undefined')yearIncome=0.00
                   .h5.mb-0.font-weight-bold.text-gray-800 &#8358; #{yearIncome}
                 .col-auto
@@ -43,7 +43,7 @@
             .card-body
               .row.no-gutters.align-items-center
                 .col.mr-2
-                  .text-xs.font-weight-bold.text-info.text-uppercase.mb-1
+                  .text-xs.font-weight-bold.text-info.mb-1
                     | Sales %
                   .row.no-gutters.align-items-center
                     .col-auto
@@ -59,12 +59,62 @@
             .card-body
               .row.no-gutters.align-items-center
                 .col.mr-2
-                  .text-xs.font-weight-bold.text-warning.text-uppercase.mb-1
-                    | Pending Goods
+                  .text-xs.font-weight-bold.text-warning.mb-1
+                    | Goods in Store(Worth)
                   .h5.mb-0.font-weight-bold.text-gray-800 &#8358; #{goodsValue}
                 .col-auto
                   i.fas.fa-comments.fa-2x.text-gray-300
       // Content Row
+      .row
+        // Earnings (Monthly) Card Example
+        .col-xl-3.col-md-6.mb-4
+          .card.border-left-primary.shadow.h-100.py-2
+            .card-body
+              .row.no-gutters.align-items-center
+                .col.mr-2
+                  .text-xs.font-weight-bold.text-primary.mb-1
+                    | S.O.P (Annual Income)
+                  -if (typeof yearIncomeSop === 'undefined') yearIncomeSop = 0.00
+                  .h5.mb-0.font-weight-bold.text-gray-800 &#8358; #{yearIncomeSop}
+                .col-auto
+                  i.fas.fa-calendar.fa-2x.text-gray-300
+        // Earnings (Monthly) Card Example
+        .col-xl-3.col-md-6.mb-4
+          .card.border-left-success.shadow.h-100.py-2
+            .card-body
+              .row.no-gutters.align-items-center
+                .col.mr-2
+                  .text-xs.font-weight-bold.text-success.mb-1
+                    | Services (Annual Income)
+                -if (typeof yearSubscriptionIncome === 'undefined') yearSubscriptionIncome = 0.00
+                  .h5.mb-0.font-weight-bold.text-gray-800 &#8358; #{yearSubscriptionIncome}
+                .col-auto
+                  i.fas.fa-dollar-sign.fa-2x.text-gray-300
+        // Pending Requests Card Example
+        .col-xl-3.col-md-6.mb-4
+          .card.border-left-warning.shadow.h-100.py-2
+            .card-body
+              .row.no-gutters.align-items-center
+                .col.mr-2
+                  .text-xs.font-weight-bold.text-warning.mb-1
+                    | Pending Tasks(Annual)
+                -if (typeof pendingTask === 'undefined') pendingTask = 0
+                  .h5.mb-0.font-weight-bold.text-gray-800  #{pendingTask}
+                .col-auto
+                  i.fas.fa-comments.fa-2x.text-gray-300
+        // Pending Requests Card Example
+        .col-xl-3.col-md-6.mb-4
+          .card.border-left-warning.shadow.h-100.py-2
+            .card-body
+              .row.no-gutters.align-items-center
+                .col.mr-2
+                  .text-xs.font-weight-bold.text-warning.mb-1
+                    | Completed Tasks(Annual)
+                -if (typeof completedTask === 'undefined') completedTask = 0
+                  .h5.mb-0.font-weight-bold.text-gray-800  #{completedTask}
+                .col-auto
+                  i.fas.fa-comments.fa-2x.text-gray-300
+
       .row
         // Area Chart
         .col-xl-8.col-lg-7
@@ -107,44 +157,44 @@
               .mt-4.text-center.small
                 span.mr-2
                   i.fas.fa-circle.text-primary
-                  |  Direct
+                  |  Goods
                 span.mr-2
                   i.fas.fa-circle.text-success
-                  |  Social
+                  |  Services
                 span.mr-2
                   i.fas.fa-circle.text-info
-                  |  Referral
+                  |  others
       // Content Row
-      .row
+      .row(hidden=true)
         // Content Column
         .col-lg-6.mb-4
           // Project Card Example
           .card.shadow.mb-4
             .card-header.py-3
-              h6.m-0.font-weight-bold.text-primary Projects
+              h6.m-0.font-weight-bold.text-primary Subscriptions
             .card-body
               h4.small.font-weight-bold
-                | Server Migration
+                | S.O.P
                 span.float-right 20%
               .progress.mb-4
                 .progress-bar.bg-danger(role='progressbar' style='width: 20%' aria-valuenow='20' aria-valuemin='0' aria-valuemax='100')
               h4.small.font-weight-bold
-                | Sales Tracking
+                | CV
                 span.float-right 40%
               .progress.mb-4
                 .progress-bar.bg-warning(role='progressbar' style='width: 40%' aria-valuenow='40' aria-valuemin='0' aria-valuemax='100')
               h4.small.font-weight-bold
-                | Customer Database
+                | Scholarship Essay
                 span.float-right 60%
               .progress.mb-4
                 .progress-bar(role='progressbar' style='width: 60%' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100')
               h4.small.font-weight-bold
-                | Payout Details
+                | School Admission
                 span.float-right 80%
               .progress.mb-4
                 .progress-bar.bg-info(role='progressbar' style='width: 80%' aria-valuenow='80' aria-valuemin='0' aria-valuemax='100')
               h4.small.font-weight-bold
-                | Account Setup
+                | Proof of Funds
                 span.float-right Complete!
               .progress
                 .progress-bar.bg-success(role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100')
@@ -225,6 +275,6 @@
   footer.sticky-footer.bg-white
     .container.my-auto
       .copyright.text-center.my-auto
-        span Copyright &copy; Your Website 2021
+        span Copyright &copy; Your Website 2022
   // End of Footer
 // End of Content Wrapper

@@ -1,0 +1,47 @@
+.container
+    .card.o-hidden.border-0.shadow-lg.my-5
+        .card-body.p-0
+            a(href='/user-accounts').btn.btn-primary
+                i.fas.fa-users.fa-fws
+            // Nested Row within Card Body
+            .row
+                .col-lg-12
+                    .p-5
+                        .text-center
+                            h1.h4.text-gray-900.mb-4 Update an Account!
+                        .alert#alertUserMessage.alert-danger.alert-dismissible.text-center(role='alert' hidden=true)
+                            .li.text-center #{message}
+                        form.user
+                            .form-group
+                                label(for='userId') User-ID
+                                input#userId.form-control.form-control-user(type='text' placeholder='User Id' name='userId' disabled=true)
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    label(for='first_name') First Name
+                                    input#first_name.form-control.form-control-user(type='text' placeholder='First Name' name='first_name')
+                                .col-sm-6
+                                    label(for='last_name') Last Name
+                                    input#last_name.form-control.form-control-user(type='text' placeholder='Last Name' name='last_name')
+                            .form-group
+                                label(for='description') Description
+                                input#description.form-control.form-control-user(type='text' placeholder='Description' name='description')
+                            .form-group
+                                label(for='location') Location
+                                input#location.form-control.form-control-user(type='text' placeholder='Location' name='location')
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    label(for='email') Email
+                                    input#email.form-control.form-control-user(type='email' placeholder='Email Address' name='email')
+                                .col-sm-6
+                                    label(for='phone') Phone
+                                    input#phone.form-control.form-control-user(type='text' placeholder='Phone Number' name='phone')
+                            .form-group
+                                label(for='gender') Gender
+                                select.form-control#gender(name='gender')
+                                    option(value='') ---- Select Gender ----
+                                    option#Male(value='Male') Male
+                                    option#Female(value='Female') Female
+                                    option#NA(value='NA') N/A
+                            a#submitEditedUser.btn.btn-primary.btn-user.btn-block
+                                | Update Account
+                            hr

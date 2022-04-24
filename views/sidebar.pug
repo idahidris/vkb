@@ -18,11 +18,19 @@ ul#accordionSidebar.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordio
   hr.sidebar-divider
   // Heading
   .sidebar-heading
-    | Store
+    | Store(Marshy Hill)
   li.nav-item
     a.nav-link(href='/goods')
       i.fas.fa-fw.fa-boxes
       span Goods
+  li.nav-item
+    a.nav-link(href='/register-goods')
+      i.fas.fa-fw.fa-boxes
+      span New Goods
+  li.nav-item
+    a.nav-link(href='/checkout')
+      i.fas.fa-fw.fa-shopping-bag
+      span Checkout
   li.nav-item
     a.nav-link(href='/sales')
       i.fas.fa-fw.fa-coins
@@ -35,26 +43,29 @@ ul#accordionSidebar.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordio
   hr.sidebar-divider
   // Heading
   .sidebar-heading
-    | Services
+    | Services(HillTop)
   // Nav Item - Tables
   li.nav-item
     a.nav-link(href='user-accounts')
       i.fas.fa-fw.fa-users
       span User Accounts
   li.nav-item
+    a.nav-link(href='register-account')
+      i.fas.fa-fw.fa-user
+      span New User Accounts
+  li.nav-item
     a.nav-link(href='/subscriptions')
       i.fas.fa-fw.fa-check-double
       span Subscriptions
+  li.nav-item
+    a.nav-link(href='/service-subscription')
+      i.fas.fa-fw.fa-briefcase
+      span New Subscription
   // Divider
   hr.sidebar-divider.d-none.d-md-block
   // Sidebar Toggler (Sidebar)
   .text-center.d-none.d-md-inline
     button#sidebarToggle.rounded-circle.border-0
   // Sidebar Message
-  .sidebar-card.d-none.d-lg-flex
-    img.sidebar-card-illustration.mb-2(src='img/undraw_rocket.svg' alt='...')
-    p.text-center.mb-2
-      strong V.K.B
-      |  is packed with premium features, components, and more!
-    a.btn.btn-success.btn-sm(href='https://startbootstrap.com/theme/sb-admin-pro') Upgrade to Pro!
+
 // End of Sidebar

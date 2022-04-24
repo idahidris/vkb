@@ -1,0 +1,14 @@
+#editUserModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+    .modal-dialog.modal-xl(role='document')
+        .modal-content
+            .modal-header
+                h5#editUserModalLabel.modal-title User
+                button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+            .modal-body
+                .alert#editUserModalAlert.alert-success.alert-dismissible(role='alert' hidden=true)
+                        .li#message.text-center
+                            | test
+                include registration-form-edit
+            .modal-footer
+                button.btn.btn-danger(type='button' data-dismiss='modal') Close

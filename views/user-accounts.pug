@@ -20,44 +20,30 @@ include header
             h6.m-0.font-weight-bold.text-primary User Accounts
           .card-body
             .table-responsive
-              table#dataTable.table.table-bordered(width='100%' cellspacing='0')
+              table#dataTableUsers.table.table-bordered(width='100%' cellspacing='0')
                 thead
                   tr
                     th First Name
                     th Last Name
+                    th Gender
                     th E-mail
-                    th Phone Number
-                    th Registered Date
+                    th Phone
                     th Description
-                    th subscription
+                    th Location
+                    th Registered Date
+                    th Action
                 tfoot
                   tr
                     th First Name
                     th Last Name
+                    th Gender
                     th E-mail
-                    th Phone Number
-                    th Registered Date
+                    th Phone
                     th Description
-                    th subscription
+                    th Location
+                    th Registered Date
+                    th Action
                 tbody
-                  tr
-                    td Ele-ojo
-                    td Idah
-                    td eleojo@gmail.com
-                    td 08030816764
-                    td 2011/04/25
-                    td customer from Instagram(rexspect)
-                    td.d-flex.justify-content-center
-                      a(href="/subscription?#1234678") add
-                      a(href="/subscription/#12345") view
-                  tr
-                    td Kiara
-                    td Idah
-                    td kiara@gmail.com
-                    td 08030816764
-                    td 2011/04/25
-                    td customer from facebook(iirexspect)
-                    td #1234678
       // /.container-fluid
     // End of Main Content
     // Footer
@@ -67,5 +53,18 @@ include header
 // End of Page Wrapper
 // Scroll to Top Button
 include confirm-logout
-include buttom
+include edit-user-modal
+// Bootstrap core JavaScript
+script(src='vendor/jquery/jquery.min.js')
+script(src='vendor/bootstrap/js/bootstrap.bundle.min.js')
+// Core plugin JavaScript
+script(src='vendor/jquery-easing/jquery.easing.min.js')
+// Custom scripts for all pages
+script(src='js/sb-admin-2.min.js')
+// Page level plugins
+script(src='vendor/datatables/jquery.dataTables.min.js')
+script(src='vendor/datatables/dataTables.bootstrap4.min.js')
+// Page level custom scripts
+script(src='js/demo/datatables-users.js')
+script(src='js/demo/editUser.js')
 

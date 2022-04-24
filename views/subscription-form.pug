@@ -1,6 +1,8 @@
 .container
     .card.o-hidden.border-0.shadow-lg.my-5
         .card-body.p-0
+            a(href='/subscriptions').btn.btn-primary
+                i.fas.fa-fw.fa-check-double
             // Nested Row within Card Body
             .row
                 .col-lg-5.d-none.d-lg-block.bg-register-image
@@ -8,55 +10,60 @@
                     .p-5
                         .text-center
                             h1.h4.text-gray-900.mb-4 Subscribe to a Service
-                        form.user
+                            -if (typeof (error) !== 'undefined' && error.length > 0)
+                                .alert.alert-danger.alert-dismissible(role='alert')
+                                    each item in error
+                                        .li #{item}
+                            -  else if (typeof (success) !== 'undefined' && success.length > 0)
+                                .alert.alert-success.alert-dismissible(role='alert')
+                                    each item in success
+                                        .li #{item}
+                        -var input = (typeof (rec) === 'undefined') ? {} : rec
+                        form.user(action = '/submit-register-subscription' method='post')
                             .form-group
-                                    select.form-control#subcriptionId
-                                        option ---- Select Subscription ID ----
-                                        option #12345678 - Idah Idris A
-                                        option #23456780 - Eleojo Bethany Idah
-                                        option #66736383 - Edidiong Kiara Idah
-                                        option #83773636 - Acheonechojo Vanessa Idah
+                                -var customerIds = (typeof(data)==='undefined')?{}:data
+                                    select.form-control#CustomerId(name='customerId')
+                                       option(value='') ---- Select Subscription ID ----
+                                       each item in customerIds
+                                        option(value = item.id selected=item.id===input.customerId) #{item.id} - #{item.firstName} - #{item.lastName} - #{item.email}
                             .form-group.row
                                 .col-sm-6.mb-3.mb-sm-0
-                                    select.form-control#serviceType
-                                        option ---- Select Service Type ----
-                                        option S.O.P
-                                        option Curriculum Vitae(CV)
-                                        option Scholarship Essay
-                                        option School Admission
-                                        option Proof of Funds
+                                    select.form-control#serviceType(name = 'serviceType')
+                                        option(value='') ---- Select Service Type ----
+                                        option(selected =input.serviceType==='S.O.P' value='S.O.P') S.O.P
+                                        option(selected =input.serviceType==='Curriculum Vitae' value='Curriculum Vitae') Curriculum Vitae(CV)
+                                        option(selected =input.serviceType==='Scholarship Essay' value='Scholarship Essay') Scholarship Essay
+                                        option(selected =input.serviceType==='School Admission' value='School Admission') School Admission
+                                        option(selected =input.serviceType==='Proof of Funds' value='Proof of Funds') Proof of Funds
                                 .col-sm-6
-                                    input#serviceTitle.form-control.form-control-user(type='text' placeholder='Service Title')
+                                    input#serviceTitle.form-control.form-control-user(type='text' placeholder='Service Title' name='serviceTitle' value=input.serviceTitle)
                             .form-group
-                                input#description.form-control.form-control-user(type='text' placeholder='Description')
+                                input#description.form-control.form-control-user(type='text' placeholder='Description' name='description' value=input.description)
                             .form-group
                                 .custom-file
-                                    input#documentLink.custom-file(type='file')
-                                    label.custom-file-label(for='documentLink') Select output Document
+                                    input#documentLink.form-control.form-control-user(type='text' placeholder='Document Link' name='documentLink' value=input.documentLink)
                             .form-group.row
                                 .col-sm-6.mb-3.mb-sm-0
-                                    input#price.form-control.form-control-user(type='text' placeholder='Price')
+                                    input#price.form-control.form-control-user(type='text' placeholder='Price' name='price' value=input.price)
                                 .col-sm-6
-                                    input#paidAmount.form-control.form-control-user(type='text' placeholder='Paid Amount')
+                                    input#paidAmount.form-control.form-control-user(type='text' placeholder='Paid Amount' name='paidAmount' value=input.paidAmount)
                             .form-group.row
                                 .col-sm-6.mb-3.mb-sm-0
-                                    input#lastPaymentRef.form-control.form-control-user(type='text' placeholder='Last Payment Ref')
+                                    input#lastPaymentRef.form-control.form-control-user(type='text' placeholder='Last Payment Ref' name='lastPaymentRef' value=input.lastPaymentReference)
                                 .col-sm-6
-                                    input#paidAmountDate.form-control.form-control-user(type='text' placeholder='Paid Amount Date')
+                                    input#paidAmountDate.form-control.form-control-user(type='text' placeholder='Paid Amount Date' name='paidAmountDate' value  = input.paidAmountDate)
                             .form-group.row
                                 .col-sm-6.mb-3.mb-sm-0
-                                    input#expectedDeliveryDate.form-control.form-control-user(type='text' placeholder='Expected Delivery Date')
+                                    input#expectedDeliveryDate.form-control.form-control-user(type='text' placeholder='Expected Delivery Date' name='expectedDeliveryDate' value=input.expectedDeliveryDate)
                                 .col-sm-6
-                                    input#actualDeliveryDate.form-control.form-control-user(type='text' placeholder='Actual Delivery Date')
+                                    input#actualDeliveryDate.form-control.form-control-user(type='text' placeholder='Actual Delivery Date' name='actualDeliveryDate' value =input.actualDeliveryDate)
                             .form-group.row
-                                .col-sm-6.mb-3.mb-sm-0
-                                    input#subscriptionDate.form-control.form-control-user(type='text' placeholder='Subscription Date')
                                 .col-sm-6
-                                    select.form-control#status
-                                        option ---- Select Status ----
-                                        option Completed
-                                        option Incomplete
-                                        option Initiated
-                            a.btn.btn-primary.btn-user.btn-block(href='login.html')
+                                    select.form-control#status(name='status')
+                                        option(value='') ---- Select Status ----
+                                        option(selected =input.status==='Completed' value='Completed') Completed
+                                        option(selected =input.status==='Incomplete' value='Incomplete') Incomplete
+                                        option(selected =input.status==='Initiated' value='Initiated') Initiated
+                            a.btn.btn-primary.btn-user.btn-block(onclick="this.closest('form').submit(); return false;")
                                 | Subscribe
                             hr

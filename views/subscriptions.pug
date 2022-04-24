@@ -20,7 +20,7 @@ include header
                         h6.m-0.font-weight-bold.text-primary Subscribed Services
                     .card-body
                         .table-responsive
-                            table#dataTable.table.table-bordered(width='100%' cellspacing='0')
+                            table#dataTableSubscriptions.table.table-bordered(width='100%' cellspacing='0')
                                 thead
                                     tr
                                         th customer subscription ID
@@ -35,13 +35,14 @@ include header
                                         th expected delivery date
                                         th actual delivery Date
                                         th status
+                                        th action
                                 tfoot
                                     tr
                                         th customer subscription ID
                                         th service type
                                         th service title
                                         th document link
-                                        th price(N)
+                                        th price
                                         th paid amount
                                         th paid amount Date
                                         th last payment reference
@@ -49,33 +50,8 @@ include header
                                         th expected delivery date
                                         th actual delivery Date
                                         th status
+                                        th action
                                 tbody
-                                    tr
-                                        td #1234567- Idris Idah
-                                        td S.O.P
-                                        td Data mining and Digital Marketing
-                                        td document link
-                                        td 10, 000
-                                        td  6, 000
-                                        td 10/03/2022
-                                        td fcmb account-idris idah
-                                        td 09/03/2022
-                                        td 15/03/2022
-                                        td ----------
-                                        td initiated
-                                    tr
-                                        td #1234567 - Idah Eleojo
-                                        td S.O.P
-                                        td Data mining and Digital Marketing
-                                        td document link
-                                        td 10, 000
-                                        td  6, 000
-                                        td 10/03/2022
-                                        td fcmb account-idris idah
-                                        td 09/03/2022
-                                        td 15/03/2022
-                                        td ----------
-                                        td completed
             // /.container-fluid
         // End of Main Content
         // Footer
@@ -85,5 +61,18 @@ include header
 // End of Page Wrapper
 // Scroll to Top Button
 include confirm-logout
-include buttom
+include edit-subscription-modal
+// Bootstrap core JavaScript
+script(src='vendor/jquery/jquery.min.js')
+script(src='vendor/bootstrap/js/bootstrap.bundle.min.js')
+// Core plugin JavaScript
+script(src='vendor/jquery-easing/jquery.easing.min.js')
+// Custom scripts for all pages
+script(src='js/sb-admin-2.min.js')
+// Page level plugins
+script(src='vendor/datatables/jquery.dataTables.min.js')
+script(src='vendor/datatables/dataTables.bootstrap4.min.js')
+// Page level custom scripts
+script(src='js/demo/datatables-subscriptions.js')
+script(src='js/demo/editSubscription.js')
 
