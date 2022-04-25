@@ -1604,7 +1604,7 @@ router.get("/dashboard", (req, res, next)=>{
                     }
 
                     for(var status of statusReport){
-                        if(status.factor==="Initiated" || status.factor==="Incomplete" )
+                        if(status.factor==="Initiated" || status.factor==="In progress" )
                             pendingTask = pendingTask + status.measure;
                         if(status.factor==="Completed")
                             completedTask = status.measure;
