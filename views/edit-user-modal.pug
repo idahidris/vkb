@@ -1,6 +1,8 @@
 #editUserModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
     .modal-dialog.modal-xl(role='document')
         .modal-content
+            .pt-5#spinner-div
+                .spinner-border.text-primary(role='status' style="width: 3rem; height: 3rem;")
             .modal-header
                 h5#editUserModalLabel.modal-title User
                 button.close(type='button' data-dismiss='modal' aria-label='Close')

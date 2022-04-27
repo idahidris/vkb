@@ -51,7 +51,12 @@ function getDate(dateString){
 }
 
 
-$("#submitEditedSubscription").on('click', updateSubscription);
+
+$("#submitEditedSubscription").click(function(){
+    $('#spinner-div').show();
+    updateSubscription();
+
+} );
 
 
 function updateSubscription() {
@@ -108,6 +113,10 @@ function updateSubscription() {
                 $("#alertMessage").attr('class', "alert alert-danger alert-dismissible");
                 $('#alertMessage').html("error occurred updating subscription, please contact admin: \""+ errorMessage+"\"");
                 $("#alertMessage").attr('hidden', false);
+
+            },
+            complete: function () {
+                $('#spinner-div').hide();
 
             }
         });

@@ -37,7 +37,11 @@ $('#editUserModal').on('show.bs.modal', function (event) {
 });
 
 
-$("#submitEditedUser").on('click', updateUser);
+$("#submitEditedUser").click(function(){
+    $('#spinner-div').show();
+    updateUser();
+
+} );
 
 
 function updateUser() {
@@ -85,12 +89,18 @@ function updateUser() {
                     $('#alertUserMessage').html(data.error);
                     $("#alertUserMessage").attr('hidden', false);
                 }
+               // $('#spinner-div').hide();
             },
             error: function (jqXhr, textStatus, errorMessage) {
 
                 $("#alertUserMessage").attr('class', "alert alert-danger alert-dismissible");
                 $('#alertUserMessage').html("error occurred updating user, please contact admin: \""+ errorMessage+"\"");
                 $("#alertUserMessage").attr('hidden', false);
+               // $('#spinner-div').hide();
+
+            },
+            complete: function () {
+                $('#spinner-div').hide();
 
             }
         });

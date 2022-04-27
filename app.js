@@ -335,6 +335,11 @@ router.post("/cart-to-sales", (req, res, next)=>{
         var ref = req.body.customerRef;
         if(ref.length<1)
             ref="default";
+        var obj={
+            "ref": ref
+        }
+
+       var jsonObject = JSON.stringify(obj);
 
         console.log("ref ", ref);
 
@@ -345,7 +350,7 @@ router.post("/cart-to-sales", (req, res, next)=>{
         var optionspost = {
             host: '127.0.0.1',
             port: 9032,
-            path: '/vkb/api/v1/cart/'+id+'/'+ref,
+            path: '/vkb/api/v1/cart/'+id,
             method: 'PUT',
             headers: header
         };
@@ -409,6 +414,7 @@ router.post("/cart-to-sales", (req, res, next)=>{
 
 
         });
+    reqPut.write(jsonObject);
     reqPut.end();
 
     reqPut.on('error', function(e) {

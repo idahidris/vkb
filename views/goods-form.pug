@@ -40,6 +40,6 @@
                                     input#manufacturedDate.form-control.form-control-user(name='manufactureddate' type='text' placeholder='Manufactured Date' value=input.manufacturedDate)
                                 .col-sm-6
                                     input#expiryDate.form-control.form-control-user(name='expirydate' type='text' placeholder='Expiry Date' value=input.expiryDate)
-                            a.btn.btn-primary.btn-user.btn-block(onclick="this.closest('form').submit(); return false;")
+                            a#buttonId.btn.btn-primary.btn-user.btn-block(onclick="$('#buttonId').prop('disabled', true);  $('#buttonId').html(\"<span class='spinner-border spinner-border-sm'></span> Loading...\"); this.closest('form').submit();   return false;")
                                 | Create
                             hr

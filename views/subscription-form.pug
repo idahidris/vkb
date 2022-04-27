@@ -64,6 +64,6 @@
                                         option(selected =input.status==='Completed' value='Completed') Completed
                                         option(selected =input.status==='InProgress' value='InProgress') InProgress
                                         option(selected =input.status==='Initiated' value='Initiated') Initiated
-                            a.btn.btn-primary.btn-user.btn-block(onclick="this.closest('form').submit(); return false;")
+                            a#buttonId.btn.btn-primary.btn-user.btn-block(onclick="$('#buttonId').prop('disabled', true);  $('#buttonId').html(\"<span class='spinner-border spinner-border-sm'></span> Loading...\"); this.closest('form').submit();   return false;")
                                 | Subscribe
                             hr

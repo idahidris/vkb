@@ -39,7 +39,7 @@
                                     form.user(action = '/cart-to-sales' method='post')
                                         input#customerRef.form-control.form-control-lg(placeholder="Customer Ref", name="customerRef")
                                         hr.my-4
-                                        a#cartSubmitButton.btn.btn-primary.btn-block.btn-lg(onclick="this.closest('form').submit(); return false;") Submit-Sales
+                                        a#buttonId.btn.btn-primary.btn-user.btn-block(onclick="$('#buttonId').prop('disabled', true);  $('#buttonId').html(\"<span class='spinner-border spinner-border-sm'></span> Loading...\"); this.closest('form').submit();   return false;") Submit-Sales
                                         hr.my-4
                                 .col-lg-12
                                  -if(data.carts.length <=0)
