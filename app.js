@@ -606,8 +606,6 @@ router.post("/submit-edited-user", (req, res, next)=>{
 
 router.post("/submit-edited-subscription",upload.single("file"), function(req, res){
 
-    console.log(req);
-
         const id = req.body.id;
         const serviceTitle = req.body.serviceTitle;
         const description = req.body.description;
