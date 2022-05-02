@@ -9,10 +9,10 @@ $('#dataTableSales').DataTable( {
     type: 'GET'
   },
   success: function (data) {
-  console.log(data)
+
   },
   onFilter: function (data) {
-  console.log(data)
+
   },
   "columns": [
     { "data": "batchId" },
