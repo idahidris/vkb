@@ -30,6 +30,22 @@ $('#dataTableSubscriptions').DataTable( {
     { "data": "id" },
   ],
   columnDefs: [
+    {  targets: 3,
+      render: function (data, type, row, meta) {
+        let rec;
+      try {
+         rec = JSON.parse(data);
+        let name = rec['fileName'];
+        let link = rec['path'];
+        return '<a  href='+link+'>'+name+'<i class="fas fa-download fa-fw"></i></a>';
+      }
+      catch (e) {
+        return '<a  >'+data+'</a>';
+      }
+
+      }
+
+    },
     {  targets: 12,
       render: function (data, type, row, meta) {
         return '<button id='+data+' type="button" onclick="myFunc(this.id)" class="btn btn-success btn-xs" data-toggle="modal" data-target="#editSubscriptionModal" data-info='+data+'><i class="fas fa-edit fa-fw"></i></button>';

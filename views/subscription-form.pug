@@ -19,7 +19,7 @@
                                     each item in success
                                         .li #{item}
                         -var input = (typeof (rec) === 'undefined') ? {} : rec
-                        form.user(action = '/submit-register-subscription' method='post')
+                        form.user(action = '/submit-register-subscription' method='post' enctype="multipart/form-data")
                             .form-group
                                 -var customerIds = (typeof(data)==='undefined')?{}:data
                                     select.form-control#CustomerId(name='customerId')
@@ -41,7 +41,10 @@
                                 input#description.form-control.form-control-user(type='text' placeholder='Description' name='description' value=input.description)
                             .form-group
                                 .custom-file
-                                    input#documentLink.form-control.form-control-user(type='text' placeholder='Document Link' name='documentLink' value=input.documentLink)
+                                    hr.sidebar-divider.my-1
+                                    label(for='documentLink') Click 'Choose File' Button to add Document
+                                    input#documentLink.custom-file(type='file'  name='documentLink' )
+                                    hr.sidebar-divider.my-0
                             .form-group.row
                                 .col-sm-6.mb-3.mb-sm-0
                                     input#price.form-control.form-control-user(type='text' placeholder='Price' name='price' value=input.price)

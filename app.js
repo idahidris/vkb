@@ -1,12 +1,23 @@
+var fs = require('fs');
 const express = require("express");
 const app = express();
 const path = require("path");
 const router = express.Router();
 const bodyParser= require("body-parser");
+const multer = require('multer');
+const upload =multer({dest: 'uploads/'});
+
+var paths = require('path');
+
 
 let myData =[];
 
 var https = require('http');
+
+var axios = require('axios');
+var FormData = require('form-data');
+
+
 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
@@ -133,7 +144,7 @@ router.get("/service-subscription", (req, res) => {
 
         reqGet.on('error', function(e) {
             console.error(e);
-            res.render("service-subscription",{"data":[]});;
+            res.render("service-subscription",{"data":[]});
         });
 
 
@@ -224,7 +235,7 @@ router.get("/cancel-cart", (req, res, next)=>{
 
         reqGet.on('error', function(e) {
             console.error(e);
-            res.render("carts", {"data":{"carts":[], total:"0.00"}});;
+            res.render("carts", {"data":{"carts":[], total:"0.00"}});
         });
 
 
@@ -287,21 +298,21 @@ router.post("/add-to-cart", (req, res, next)=>{
                     }
                     console.log(listError);
 
-                    var reply ={
+                    var replies ={
                         "successful": false,
                         "message": listError
                     };
-                    res.send(reply);
+                    res.send(replies);
 
                 }
                 else {
-                    var listError=["please try again, later"];
+                    var listErrors=["please try again, later"];
 
-                    var response ={
+                    var responses ={
                         "successful": false,
-                        "message": listError
+                        "message": listErrors
                     };
-                    res.send(response);
+                    res.send(responses);
                 }
 
 
@@ -390,21 +401,21 @@ router.post("/cart-to-sales", (req, res, next)=>{
                     }
                     console.log(listError);
 
-                    var reply ={
+                    var replies ={
                         "successful": false,
                         "message": listError
                     };
-                    res.render("confirmation", reply);
+                    res.render("confirmation", replies);
 
                 }
                 else {
-                    var listError=["please try again, later"];
+                    var listErrors=["please try again, later"];
 
-                    var response ={
+                    var responses ={
                         "successful": false,
-                        "message": listError
+                        "message": listErrors
                     };
-                    res.render("confirmation", response);
+                    res.render("confirmation", responses);
                 }
 
 
@@ -590,7 +601,134 @@ router.post("/submit-edited-user", (req, res, next)=>{
     }
 );
 
-router.post("/submit-edited-subscription", (req, res, next)=>{
+
+
+
+router.post("/submit-edited-subscription",upload.single("file"), function(req, res){
+
+    console.log(req);
+
+        const id = req.body.id;
+        const serviceTitle = req.body.serviceTitle;
+        const description = req.body.description;
+        const price = req.body.price;
+        const paidAmount = req.body.paidAmount;
+        const paidAmountDate = req.body.paidAmountDate;
+        const lastPaymentReference = req.body.lastPaymentReference;
+        const expectedDeliveryDate = req.body.expectedDeliveryDate;
+        const actualDeliveryDate = req.body.actualDeliveryDate;
+        const status = req.body.status;
+        var documentLink;
+
+    var fileName;
+
+        if(req.file && req.file.filename) {
+            fileName = req.file.filename;
+             documentLink = req.file.originalname;
+
+        }
+
+
+
+        var obj = {
+            "id": id,
+            "serviceTitle": serviceTitle,
+            "description": description,
+            "price": price,
+            "paidAmount": paidAmount,
+            "paidAmountDate": paidAmountDate,
+            "documentLink": documentLink,
+            "lastPaymentReference": lastPaymentReference,
+            "expectedDeliveryDate": expectedDeliveryDate,
+            "actualDeliveryDate": actualDeliveryDate,
+            "status": status
+
+        };
+
+
+
+
+        var jsonObject = JSON.stringify(obj);
+
+            console.info("Making a put call ...");
+
+            var data = new FormData();
+
+            if(fileName) {
+                data.append('file', fs.createReadStream(paths.resolve('./uploads/' + req.file.filename), {
+                    originalFileName: req.file.originalname,
+                    contentType: req.file.mimetype
+
+                }));
+            }
+            data.append('subscription', jsonObject);
+
+
+            var config = {
+                method: 'put',
+                url: 'http://127.0.0.1:9032/vkb/api/v1/subscription',
+                headers: {
+                    'Content-Type': 'multipart/form-data;boundary=1AE12345AF',
+                    ...data.getHeaders()
+                },
+                data : data
+            };
+            console.info("REQUEST:: " +jsonObject);
+
+            axios(config)
+                .then(function (response) {
+                    console.log("status::::::::::::::::::::::::::::::::::",response.status);
+                    if(response.status===200){
+                        let id = response.data.responseBody.id;
+                        if(fileName) {
+                            fs.unlinkSync(paths.resolve('./uploads/' + fileName));
+                        }
+                        res.send({success: ["Update Successfully Completed, ref "+id]});
+                    }
+                    else{
+                        res.send({error: ['Error occurred updating subscription, please try again later']});
+
+                    }
+
+                })
+                .catch(function (error) {
+
+                    console.log("ERROR::::",error);
+                    if(error.response.status===400){
+                        let resp = error.response.data;
+                        let listError=[];
+                        let k =0;
+                        for(var item of resp.apiErrors.apiErrorList){
+                            listError[k]=item.message;
+                            k=k+1;
+                        }
+
+                        if(fileName) {
+                            fs.unlinkSync(paths.resolve('./uploads/' + fileName));
+                        }
+                        res.send( {error: listError})
+
+                    }
+
+                    else {
+                        if(fileName) {
+                            fs.unlinkSync(paths.resolve('./uploads/' + fileName));
+                        }
+                        res.send({error: ['Error occurred updating subscription, please try again later '+ error]});
+                    }
+
+                });
+
+
+
+
+
+
+
+    }
+);
+
+router.post("/submit-edited-subscription2", (req, res, next)=>{
 
         const obj = req.body;
         var jsonObject = JSON.stringify(obj);
@@ -840,7 +978,8 @@ router.post("/login", (req, res)=>{
 
 
 
-router.post("/submit-register-subscription", (req, res)=>{
+
+router.post("/submit-register-subscription",upload.single("documentLink"), function(req, res){
 
         const customerId = req.body.customerId;
         const serviceType = req.body.serviceType;
@@ -853,7 +992,18 @@ router.post("/submit-register-subscription", (req, res)=>{
         const expectedDeliveryDate = req.body.expectedDeliveryDate;
         const actualDeliveryDate = req.body.actualDeliveryDate;
         const status = req.body.status;
-        const documentLink = req.body.documentLink;
+        var documentLink;
+
+        var fileName;
+
+        if(req.file && req.file.filename) {
+            fileName = req.file.filename;
+            documentLink = req.file.originalname;
+
+        }
+
+
+
 
         var result=[];
         var i =0;
@@ -866,10 +1016,10 @@ router.post("/submit-register-subscription", (req, res)=>{
             "serviceType": serviceType,
             "serviceTitle": serviceTitle,
             "description": description,
-            "documentLink": documentLink,
             "price": price,
             "paidAmount": paidAmount,
             "paidAmountDate": paidAmountDate,
+            "documentLink": documentLink,
             "lastPaymentReference": lastPaymentReference,
             "expectedDeliveryDate": expectedDeliveryDate,
             "actualDeliveryDate": actualDeliveryDate,
@@ -877,10 +1027,12 @@ router.post("/submit-register-subscription", (req, res)=>{
 
         };
 
+
+
+
         var jsonObject = JSON.stringify(obj);
 
-
-        if(i>0) {
+    if(i>0) {
             console.log(i + "error(s) found");
             console.error(result);
             res.render("service-subscription", {error: result, data: myData, rec: obj});
@@ -888,77 +1040,81 @@ router.post("/submit-register-subscription", (req, res)=>{
 
         else {
 
-            var postheaders = {
-                'Content-Type': 'application/json',
-                'Content-Length': Buffer.byteLength(jsonObject, 'utf8')
-            };
 
+        console.info("Making a post call ...");
 
-            var optionspost = {
-                host: '127.0.0.1',
-                port: 9032,
-                path: '/vkb/api/v1/subscription',
-                method: 'POST',
-                headers: postheaders
-            };
+        var data = new FormData();
 
-            console.info("Making a post call ...");
-            console.info(optionspost);
-            console.info("REQUEST:: " +jsonObject);
+        if(fileName) {
+            data.append('file', fs.createReadStream(paths.resolve('./uploads/' + req.file.filename), {
+                originalFileName: req.file.originalname,
+                contentType: req.file.mimetype
+
+            }));
+        }
+        data.append('subscription', jsonObject);
 
 
 
-            // do the POST call
-            var reqPost = https.request(optionspost, function(res2) {
-                console.log("statusCode: ", res2.statusCode);
-                // uncomment it for header details
-                //  console.log("headers: ", res.headers);
+        var config = {
+            method: 'post',
+            url: 'http://127.0.0.1:9032/vkb/api/v1/subscription',
+            headers: {
+                'Content-Type': 'multipart/form-data;boundary=1AE12345AF',
+                ...data.getHeaders()
+            },
+            data : data
+        };
+        console.info("REQUEST:: " +jsonObject);
 
-                res2.on('data', function(d) {
-                    console.info('POST result:\n');
-                    var response = JSON.parse(d);
-                    console.log(response);
-                    console.info('\n\nPOST completed');
-
-
-                    if(res2.statusCode===200){//successful
-                        var id = response.responseBody.id;
-
-
-                        res.render("service-subscription", {data: myData, success: ["Successfully Completed, ref "+id]});
-
+        axios(config)
+            .then(function (response) {
+                console.log("status::::::::::::::::::::::::::::::::::",response.status);
+                if(response.status===200){
+                    let id = response.data.responseBody.id;
+                    if(fileName) {
+                        fs.unlinkSync(paths.resolve('./uploads/' + req.file.filename));
                     }
-                    else if(res2.statusCode===400) {
-                        var listError=[];
-                        var k =0;
-                        for(var item of response.apiErrors.apiErrorList){
-                            listError[k]=item.message;
-                            k=k+1;
-                        }
-                        console.log(listError);
-                        res.render("service-subscription", {error: listError, data: myData, rec:obj});
+                    res.render("service-subscription", {data: myData, success: ["Successfully Completed, ref "+id ]});
+                }
+                else{
+                    res.render("service-subscription", {data:myData, rec: obj, error: ['Error occurred registering subscription, please try again later']});
 
+                }
 
+            })
+            .catch(function (error) {
+
+                console.log("ERROR::::",error);
+                if(error.response.status===400){
+                    let resp = error.response.data;
+                    let listError=[];
+                    let k =0;
+                    console.log("ApiErrors ", resp.apiErrors);
+                    console.log("apiErrorList ", resp.apiErrors.apiErrorList);
+                    for(var item of resp.apiErrors.apiErrorList){
+                        listError[k]=item.message;
+                        k=k+1;
                     }
-                    else {
-                        res.render("service-subscription", {data:myData, rec: obj, error: ['Error occurred registering goods, please try again later']});
+                    console.log(listError);
+                    if(fileName) {
+                        fs.unlinkSync(paths.resolve('./uploads/' + req.file.filename));
                     }
+                    res.render("service-subscription", {error: listError, data: myData, rec:obj});
 
+                }
 
-                });
+                else {
+                    if(fileName) {
+                        fs.unlinkSync(paths.resolve('./uploads/' + req.file.filename));
+                    }
+                    res.render("service-subscription", {
+                        data: myData,
+                        rec: obj,
+                        error: ['Error occurred registering subscription, please try again later:::' + error]
+                    });
+                }
 
-
-
-
-            });
-
-
-            reqPost.write(jsonObject);
-            reqPost.end();
-
-            reqPost.on('error', function(e) {
-                res.render("service-subscription", {data: myData,rec: obj, error: ['Error occurred registering goods, please try again later']});
-                console.error(e);
             });
 
 
@@ -1040,10 +1196,10 @@ router.post("/submit-register-user", (req, res)=>{
 
 
                     if(res2.statusCode===200){//successful
-                        var id = response.responseBody.id;
-                        var email=response.responseBody.email;
+                        let id = response.responseBody.id;
+                        let emails=response.responseBody.email;
 
-                        res.render("register-account", {success: ["Successfully Completed, ref "+id +"-"+email]});
+                        res.render("register-account", {success: ["Successfully Completed, ref "+id +"-"+emails]});
 
                     }
                     else if(res2.statusCode===400) {
@@ -1121,7 +1277,7 @@ router.post("/submit-register-goods", (req, res)=>{
 
         };
 
-         jsonObject = JSON.stringify(obj);
+         let jsonObject = JSON.stringify(obj);
 
 
         if(i>0) {
@@ -1167,7 +1323,6 @@ router.post("/submit-register-goods", (req, res)=>{
 
                     if(res2.statusCode===200){//successful
                         var id = response.responseBody.id;
-                        var name=response.responseBody.name;
 
                         res.render("register-goods", {success: ["Successfully Completed, ref "+id]});
 
@@ -1439,6 +1594,10 @@ router.get("/users-data-source", (req, res, next)=>{
 );
 
 
+
+
+
+
 router.get("/sales-data-source", (req, res, next)=>{
 
 
@@ -1692,7 +1851,7 @@ router.get("/goods-data-source", (req, res, next)=>{
 
         };
 
-         jsonObject2 = JSON.stringify(obj2);
+         let jsonObject2 = JSON.stringify(obj2);
 
 
             var header = {
@@ -1889,13 +2048,6 @@ function validate(data, name, result, i){
     }
     return i;
 }
-
-
-
-
-
-
-
 
 
 

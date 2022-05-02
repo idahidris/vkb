@@ -18,12 +18,12 @@
                                 .alert.alert-success.alert-dismissible(role='alert')
                                     each item in success
                                         .li #{item}
-                    -var input = (typeof (data) === 'undefined') ? {} : data
+                        -var input = (typeof (data) === 'undefined') ? {} : data
                         form.user(action = '/submit-register-user' method='post')
                             .form-group.row
                                 .col-sm-6.mb-3.mb-sm-0
                                     input#first_name.form-control.form-control-user(type='text' placeholder='First Name' name='first_name' value=input.firstName)
-                                .col-sm-6
+                                .col-sm-6.mb-3.mb-sm-0
                                     input#last_name.form-control.form-control-user(type='text' placeholder='Last Name' name='last_name' value=input.lastName)
                             .form-group
                                 input#description.form-control.form-control-user(type='text' placeholder='Description' name='description' value=input.description)

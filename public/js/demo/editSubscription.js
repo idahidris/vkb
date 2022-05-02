@@ -24,6 +24,24 @@ $('#editSubscriptionModal').on('show.bs.modal', function (event) {
                     $('#'+(data.status).trim()).attr("selected", true);
                     $("#alertMessage").attr('hidden', true);
 
+
+                    let rec;
+                    let prevLink ='';
+                    try {
+                        rec = JSON.parse(data.documentLink);
+                        let name = rec['fileName'];
+                        let link = rec['path'];
+                        prevLink = '<a  href='+link+'>Existing File<i class="fas fa-arrow-right fa-fw"></i>'+name+'<i class="fas fa-download fa-fw"></i></a>';
+                    }
+                    catch (e) {
+                        console.log(e);
+                        prevLink = '<a  >'+data.documentLink+'</a>';
+                    }
+
+                    $('#previousDocumentLink').html(prevLink);
+
+
+
                 }
             },
             error: function (jqXhr, textStatus, errorMessage) {
@@ -60,6 +78,9 @@ $("#submitEditedSubscription").click(function(){
 
 
 function updateSubscription() {
+
+    var data = new FormData();
+
    var id =  $('#submitEditedSubscription').attr("data");
    var serviceTitle = $('#serviceTitle').val();
    var description = $('#description').val();
@@ -73,19 +94,32 @@ function updateSubscription() {
    var actualDeliveryDate = $('#actualDeliveryDate').val();
    var status = $('#status').val();
 
-   let obj = {
-       "id": id,
-       "serviceTitle": serviceTitle,
-       "description": description,
-       "price": price,
-       "paidAmount": paidAmount,
-       "documentLink": documentLink,
-       "lastPaymentReference": lastPaymentRef,
-       "paidAmountDate": paidAmountDate,
-       "expectedDeliveryDate": expectedDeliveryDate,
-       "actualDeliveryDate": actualDeliveryDate,
-       "status": status
-   };
+
+    var fileInput= $('#documentLink2').prop('files');
+
+    if(fileInput && fileInput[0]) {
+        data.append("file", fileInput[0], fileInput[0].name);
+        documentLink= fileInput[0].name;
+    }
+
+
+
+
+        data.append( "id", id);
+        data.append( "serviceTitle", serviceTitle);
+        data.append( "description", description);
+        data.append( "price", price);
+        data.append("paidAmount", paidAmount);
+        data.append("documentLink", documentLink);
+        data.append( "lastPaymentReference", lastPaymentRef);
+        data.append("paidAmountDate", paidAmountDate);
+        data.append("expectedDeliveryDate", expectedDeliveryDate);
+        data.append("actualDeliveryDate", actualDeliveryDate);
+        data.append("status", status);
+
+
+    //data.append("file", fileInput.files[0], "LGA STATE NAME AND CODE.xlsx");
+    //data.append("serviceTitle", serviceTitle);
 
 
 
@@ -93,8 +127,11 @@ function updateSubscription() {
     $.ajax(
         '/submit-edited-subscription',
         {
-            data: obj,
+            data: data,
             type: 'POST',
+            contentType: false,
+            processData: false,
+
             success: function (data) {
                 if(data.success){
                     $("#alertMessage").attr('class', "alert alert-success alert-dismissible");
@@ -120,6 +157,40 @@ function updateSubscription() {
 
             }
         });
+
+
+
+    // $.ajax(
+    //     '/submit-edited-subscription',
+    //     {
+    //         data: obj,
+    //         type: 'POST',
+    //         contentType: "multipart/form-data;boundary=1AE12345AF",
+    //         success: function (data) {
+    //             if(data.success){
+    //                 $("#alertMessage").attr('class', "alert alert-success alert-dismissible");
+    //                 $('#alertMessage').html(data.success);
+    //                 $("#alertMessage").attr('hidden', false);
+    //
+    //             }
+    //             else {
+    //                 $("#alertMessage").attr('class', "alert alert-danger alert-dismissible");
+    //                 $('#alertMessage').html(data.error);
+    //                 $("#alertMessage").attr('hidden', false);
+    //             }
+    //         },
+    //         error: function (jqXhr, textStatus, errorMessage) {
+    //
+    //             $("#alertMessage").attr('class', "alert alert-danger alert-dismissible");
+    //             $('#alertMessage').html("error occurred updating subscription, please contact admin: \""+ errorMessage+"\"");
+    //             $("#alertMessage").attr('hidden', false);
+    //
+    //         },
+    //         complete: function () {
+    //             $('#spinner-div').hide();
+    //
+    //         }
+    //     });
 
 
 

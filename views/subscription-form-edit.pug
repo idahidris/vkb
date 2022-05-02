@@ -23,8 +23,13 @@
                                 label(for='description') Description
                                 input#description.form-control.form-control-user(type='text' placeholder='Description' name='description')
                             .form-group
-                                    label(for='documentLink') Document Link
-                                    input#documentLink.form-control.form-control-user(type='text' placeholder='Document Link' name='documentLink')
+                                .col-sm-6.mb-3.mb-sm-0
+                                    hr.sidebar-divider.my-1
+                                    label(for='documentLink2') Click 'Choose File' Button to update Document
+                                    input#documentLink2.custom-file(type='file'  name='documentLink2' )
+                                .col-sm-6
+                                    label#previousDocumentLink.col-form-label Hello world
+                                    hr.sidebar-divider.my-0
                             .form-group.row
                                 .col-sm-6.mb-3.mb-sm-0
                                     label(for='price') Price
