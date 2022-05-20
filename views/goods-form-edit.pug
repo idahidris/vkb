@@ -1,0 +1,47 @@
+.container
+    .card.o-hidden.border-0.shadow-lg.my-5
+        .card-body.p-0
+            // Nested Row within Card Body
+            a(href='/goods').btn.btn-primary
+                i.fas.fa-cart-plus.fa-fws
+            .row
+                .col-lg-12
+                    .p-5
+                        .text-center
+                            h1.h4.text-gray-900.mb-4 Update an Account!
+                        .alert#alertUserMessage.alert-danger.alert-dismissible.text-center(role='alert' hidden=true)
+                            .li.text-center #{message}
+                        form.user
+                            .form-group
+                                label(for='id') Goods-ID
+                                input#id.form-control.form-control-user(type='text' placeholder='Goods Id' name='id' disabled=true)
+                            .form-group
+                                    select.form-control#store(name='store')
+                                        option(value='Marshy Hill Estate') Marshy Hill Estate
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    label(for='name') Name
+                                    input#name.form-control.form-control-user(name='name' type='text' placeholder='Name')
+                                .col-sm-6
+                                    label(for='quantity') Quantity
+                                    input#quantity.form-control.form-control-user(name='quantity' type='text' placeholder='Quantity')
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    label(for='unitPrice') Unit Price
+                                    input#unitPrice.form-control.form-control-user(name='unitprice' type='text' placeholder='Unit Price')
+                                .col-sm-6(hidden=true)
+                                    label(for='quantitySold') Quantity  Sold
+                                    input#quantitySold.form-control.form-control-user(name='quantitySold' type='text' placeholder='Quantity Sold')
+                            .form-group
+                                    label(for='description') Description
+                                    input#description.form-control.form-control-user(name='description' type='text' placeholder='Description')
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    label(for='manufacturedDate') Manufactured Date
+                                    input#manufacturedDate.form-control.form-control-user(name='manufacturedDate' type='text' placeholder='Manufactured Date')
+                                .col-sm-6
+                                    label(for='expiryDate') Expiry Date
+                                    input#expiryDate.form-control.form-control-user(name='expiryDate' type='text' placeholder='Expiry Date')
+                            a#submitEditedGoods.btn.btn-primary.btn-user.btn-block
+                                | Update Goods
+                            hr

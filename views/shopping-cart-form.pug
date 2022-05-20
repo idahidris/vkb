@@ -1,0 +1,37 @@
+.container
+    .card.o-hidden.border-0.shadow-lg.my-5
+        .card-body.p-0
+            a(href='/shopping-carts').btn.btn-primary
+                i.fas.fa-fw.fa-cart-arrow-down
+            // Nested Row within Card Body
+            .row
+                .col-lg-5.d-none.d-lg-block#imgPreview
+                .col-lg-7
+                    .p-5
+                        .text-center
+                            h1.h4.text-gray-900.mb-4 Add Product to Shopping-Cart
+                        .alert#alertShoppingMessage.alert-danger.alert-dismissible.text-center(role='alert' hidden=true)
+                            .li.text-center #{messageShopping}
+                        form#myShoppingCartForm.user(name='myShoppingCartForm')
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    input#productName.form-control.form-control-user(type='text' placeholder='Product Name' name='productName')
+                                .col-sm-6.mb-3.mb-sm-0
+                                    input#sellerName.form-control.form-control-user(type='text' placeholder='Seller Name' name='sellerName')
+                            .form-group
+                                input#pageLink.form-control.form-control-user(type='text' placeholder='Page Link' name='pageLink')
+                            .form-group
+                                input#imageLink.form-control.form-control-user(type='text' placeholder='Image Link' name='imageLink')
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    input#shoppingUnitPrice.form-control.form-control-user(type='number' placeholder='Unit Price' name='unitPrice')
+                                .col-sm-6
+                                    input#shoppingQuantity.form-control.form-control-user(type='number' placeholder='Quantity' name='shoppingQuantity')
+                            .form-group.row
+                                .col-sm-6.mb-3.mb-sm-0
+                                    input#rate.form-control.form-control-user.text-center(type='number' placeholder='Rate' name='rate')
+                                .col-sm-6
+                                    input#totalSingleShopping.form-control.form-control-user(type='text' placeholder='Total' name='totalSingleShopping' disabled=true)
+                            a#shoppingButtonId.btn.btn-primary.btn-user.btn-block
+                                | Add Product
+                            hr

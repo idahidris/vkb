@@ -127,20 +127,20 @@ function updateSubscription() {
 
             success: function (data) {
                 if(data.success){
-                    $("#alertMessage").attr('class', "alert alert-success alert-dismissible");
+                    $("#alertMessage").attr('class', "alert alert-success alert-dismissible text-center");
                     $('#alertMessage').html(data.success);
                     $("#alertMessage").attr('hidden', false);
 
                 }
                 else {
-                    $("#alertMessage").attr('class', "alert alert-danger alert-dismissible");
+                    $("#alertMessage").attr('class', "alert alert-danger alert-dismissible text-center");
                     $('#alertMessage').html(data.error);
                     $("#alertMessage").attr('hidden', false);
                 }
             },
             error: function (jqXhr, textStatus, errorMessage) {
 
-                $("#alertMessage").attr('class', "alert alert-danger alert-dismissible");
+                $("#alertMessage").attr('class', "alert alert-danger alert-dismissible text-center");
                 $('#alertMessage').html("error occurred updating subscription, please contact admin: \""+ errorMessage+"\"");
                 $("#alertMessage").attr('hidden', false);
 

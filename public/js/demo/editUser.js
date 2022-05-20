@@ -78,13 +78,13 @@ function updateUser() {
             type: 'POST',
             success: function (data) {
                 if(data.success){
-                    $("#alertUserMessage").attr('class', "alert alert-success alert-dismissible");
+                    $("#alertUserMessage").attr('class', "alert alert-success alert-dismissible text-center");
                     $('#alertUserMessage').html(data.success);
                     $("#alertUserMessage").attr('hidden', false);
 
                 }
                 else {
-                    $("#alertUserMessage").attr('class', "alert alert-danger alert-dismissible");
+                    $("#alertUserMessage").attr('class', "alert alert-danger alert-dismissible text-center");
                     $('#alertUserMessage').html(data.error);
                     $("#alertUserMessage").attr('hidden', false);
                 }
@@ -92,7 +92,7 @@ function updateUser() {
             },
             error: function (jqXhr, textStatus, errorMessage) {
 
-                $("#alertUserMessage").attr('class', "alert alert-danger alert-dismissible");
+                $("#alertUserMessage").attr('class', "alert alert-danger alert-dismissible text-center");
                 $('#alertUserMessage').html("error occurred updating user, please contact admin: \""+ errorMessage+"\"");
                 $("#alertUserMessage").attr('hidden', false);
                // $('#spinner-div').hide();

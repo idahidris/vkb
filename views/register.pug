@@ -21,20 +21,30 @@ head
           .p-5
             .text-center
               h1.h4.text-gray-900.mb-4 Create an Account!
-            form.user
+            -if (typeof (error) !== 'undefined' && error.length > 0)
+                  .alert.alert-danger.alert-dismissible(role='alert')
+                      each item in error
+                          .li.text-center #{item}
+            -if (typeof (success) !== 'undefined' && success.length > 0)
+                   .alert.alert-success.alert-dismissible(role='alert')
+                       each suc in success
+                           .li.text-center #{suc}
+            form.user(action='/register' method='POST')
               .form-group.row
                 .col-sm-6.mb-3.mb-sm-0
-                  input#exampleFirstName.form-control.form-control-user(type='text' placeholder='First Name')
+                  input#exampleFirstName.form-control.form-control-user(type='text' placeholder='First Name' name='exampleFirstName')
                 .col-sm-6
-                  input#exampleLastName.form-control.form-control-user(type='text' placeholder='Last Name')
+                  input#exampleLastName.form-control.form-control-user(type='text' placeholder='Last Name' name='exampleLastName')
               .form-group
-                input#exampleInputEmail.form-control.form-control-user(type='email' placeholder='Email Address')
+                input#exampleInputEmail.form-control.form-control-user(type='email' placeholder='Email Address' name='exampleInputEmail')
+              .form-group
+                input#exampleInputUsername.form-control.form-control-user(type='text' placeholder='User Name' name='exampleInputUsername')
               .form-group.row
                 .col-sm-6.mb-3.mb-sm-0
-                  input#exampleInputPassword.form-control.form-control-user(type='password' placeholder='Password')
+                  input#exampleInputPassword.form-control.form-control-user(type='password' placeholder='Password' name='exampleInputPassword')
                 .col-sm-6
-                  input#exampleRepeatPassword.form-control.form-control-user(type='password' placeholder='Repeat Password')
-              a.btn.btn-primary.btn-user.btn-block(href='login.html')
+                  input#exampleRepeatPassword.form-control.form-control-user(type='password' placeholder='Repeat Password' name='exampleRepeatPassword')
+              a.btn.btn-primary.btn-user.btn-block(onclick="this.closest('form').submit(); return false;")
                 | Register Account
               hr
               a.btn.btn-google.btn-user.btn-block(href='index.html')
@@ -47,7 +57,7 @@ head
             .text-center
               a.small(href='forgot-password.html') Forgot Password?
             .text-center
-              a.small(href='login.html') Already have an account? Login!
+              a.small(href='/login') Already have an account? Login!
 // Bootstrap core JavaScript
 script(src='vendor/jquery/jquery.min.js')
 script(src='vendor/bootstrap/js/bootstrap.bundle.min.js')

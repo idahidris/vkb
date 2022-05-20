@@ -1,0 +1,69 @@
+
+.container
+        .row.d-flex.justify-content-center.align-items-center
+            .col-12
+                .card(style='border-radius: 15px;')
+                    .card-body
+                        .row.g-0
+                                .col-lg-8
+                                    .p-4
+                                    -if (typeof (error) !== 'undefined' && error.length > 0)
+                                        .alert.alert-danger.alert-dismissible(role='alert')
+                                            each item in error
+                                                .li.text-center #{item}
+                                    - else if (typeof (success) !== 'undefined' && success.length > 0)
+                                        .alert.alert-success.alert-dismissible(role='alert')
+                                            each item in success
+                                                .li #{item}
+                                    -if(typeof data ==='undefined' || data.carts.length===0)data2={carts:[], total:"0.00"};
+                                          if(data.carts.length >0)
+                                            h6.mb-0.text-muted  #{data.carts.length} item(s)
+                                    each cart in data.carts
+                                        hr.my-4
+                                        .row.mb-4.d-flex.justify-content-between.align-items-center
+                                            .col-md-2.col-lg-2.col-xl-2
+                                                img.img-fluid.rounded-3(src=cart.imageLink alt='image link')
+                                            .col-md-3.col-lg-3.col-xl-3
+                                                a(href=cart.pageLink target='_blank')
+                                                    h6.text-muted #{cart.productName}
+                                                    h6.text-black.mb-0 #{cart.sellerName}
+                                            .col-md-3.col-lg-3.col-xl-2.d-flex
+                                                input#itemQuantity.form-control.form-control-lg.px-2(min='0' name='quantity' value=cart.quantity type='number' disabled=true)
+                                            .col-md-3.col-lg-2.col-xl-2.offset-lg-1
+                                                h6#itemUnitPrice.mb-0 &#8358; #{cart.unitPrice * cart.rate}
+                                            .col-md-1.col-lg-1.col-xl-1.text-end
+                                                a.text-muted(href='/cancel-shopping-cart?id='+cart.id)
+                                                    i.fas.fa-times
+                                        hr.my-4
+
+                                .col-lg-4.bg-greys
+                                  -if(data.carts.length >0)
+                                    .p-4
+                                        h6.fw-bold.mb-5.mt-2.pt-1 Summary
+                                        hr.my-4
+                                        .d-flex.justify-content-between.mb-5
+                                            h6.text-uppercase Total price:
+                                            h5#itemTotalPrice &#8358; #{data.total}
+                                        p.my-4
+                                    form.user(action = '/shopping-cart-to-order' method='post')
+                                        input#shippingVendorEmail.form-control.form-control-lg(placeholder="Vendor Email", name="shippingVendorEmail")
+                                        p.my-4
+                                        input#shippingVendor.form-control.form-control-lg(placeholder="Vendor Name", name="shippingVendor")
+                                        p.my-4
+                                        input#shippingDescription.form-control.form-control-lg(placeholder="Description", name="shippingDescription")
+                                        p.my-4
+                                        input#customCheck.custom-control-input(type='checkbox')
+                                        label.custom-control-label(for='customCheck')
+                                            | Send
+                                            | Email
+                                        p.my-4
+                                        a#buttonId.btn.btn-primary.btn-user.btn-block(onclick="$('#buttonId').prop('disabled', true);  $('#buttonId').html(\"<span class='spinner-border spinner-border-sm'></span> Loading...\"); this.closest('form').submit();   return false;") Submit Order(s)
+                                        hr.my-4
+                                .col-lg-12
+                                 -if(data.carts.length <=0)
+                                   h6.fw-bold.text-center
+                                    -if(typeof data.error !=="undefined")
+                                         each error in data.error
+                                            .li.text-center #{data.error[0]}
+                                    -if(typeof data.error ==="undefined")
+                                        .li.text-center No item in the shopping cart

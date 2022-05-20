@@ -24,8 +24,10 @@ head
               .p-5
                 .text-center
                   h1.h4.text-gray-900.mb-4 Welcome Back!
-                  .alert.alert-danger.alert-dismissible(role='alert')
-                    | invalid login credentials
+                -if (typeof (error) !== 'undefined' && error.length > 0)
+                      .alert.alert-danger.alert-dismissible(role='alert')
+                          each item in error
+                              .li.text-center #{item}
                 form.user(action = '/login' method='post')
                   .form-group
                     input#exampleInputEmail.form-control.form-control-user(name= 'username' type='email' aria-describedby='emailHelp' placeholder='Enter Email Address...')
