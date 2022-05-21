@@ -931,10 +931,9 @@ router.get("/view-shipping-cart",redirectLogin, (req, res, next)=>{
                 if(res2.statusCode===200){//successful
 
                     var records= response.responseBody;
-                    var shippingOrderItems = records.shippingOrderItems;
 
                     console.log(records);
-                    res.render("shopping-carts",{"data":{"carts":shippingOrderItems, "total":"0.00"}});
+                    res.render("shopping-carts-preview",{"data":{"carts":records, "total":"0.00"}});
 
 
                 }
@@ -946,11 +945,11 @@ router.get("/view-shipping-cart",redirectLogin, (req, res, next)=>{
                         k=k+1;
                     }
                     console.log(listError);
-                    res.render("shopping-carts",{"data":{"error":listError,"carts":[], "total":"0.00"}});
+                    res.render("shopping-carts-preview",{"data":{"error":listError,"carts":[], "total":"0.00"}});
 
                 }
                 else {
-                    res.render("shopping-carts",{"data":{"error":["error occurred, please try again later"],"carts":[], "total":"0.00"}});
+                    res.render("shopping-carts-preview",{"data":{"error":["error occurred, please try again later"],"carts":[], "total":"0.00"}});
                 }
 
 
