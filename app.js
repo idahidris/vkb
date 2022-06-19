@@ -1276,6 +1276,7 @@ router.post("/submit-edited-subscription",redirectLogin,upload.single("file"), f
                 url: 'http://127.0.0.1:9032/vkb/api/v1/subscription',
                 headers: {
                     'Content-Type': 'multipart/form-data;boundary=1AE12345AF',
+                    'Authorization': req.session.token,
                     ...data.getHeaders()
                 },
                 data : data
@@ -1745,8 +1746,7 @@ router.post("/login",redirectHome, (req, res)=>{
 
 
 
-
-router.post("/submit-register-subscription",upload.single("documentLink"), function(req, res){
+router.post("/submit-register-subscription",redirectLogin,upload.single("documentLink"), function(req, res){
 
         const customerId = req.body.customerId;
         const serviceType = req.body.serviceType;
@@ -1828,7 +1828,7 @@ router.post("/submit-register-subscription",upload.single("documentLink"), funct
             url: 'http://127.0.0.1:9032/vkb/api/v1/subscription',
             headers: {
                 'Content-Type': 'multipart/form-data;boundary=1AE12345AF',
-                ...data.getHeaders()
+                'Authorization': req.session.token
             },
             data : data
         };
